@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SuccessStudentPage from './pages/SuccessStudentPage';
 import ExerciseTestPage from './pages/ExerciseTestPage';
 import DescriptionPage from './pages/DescriptionPage';
+import FinalExerciseTestPage from './pages/FinalExerciseTestPage';
 
 
 
@@ -24,6 +25,11 @@ function App() {
           <Route
             path="/description"
             element={<DescriptionPage/>}
+          >
+          </Route>
+          <Route
+            path="/end"
+            element={<FinalExerciseTestPage/>}
           >
           </Route>
         </Routes>
