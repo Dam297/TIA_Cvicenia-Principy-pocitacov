@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SuccessStudentPage from './pages/SuccessStudentPage';
+import ExerciseTestPage from './pages/ExerciseTestPage';
 
 
 function App() {
@@ -12,6 +13,11 @@ function App() {
             path="/"
             element={<SuccessStudentPage/>}
             >
+          </Route>
+          <Route
+            path="/list"
+            element={<ExerciseTestPage/>}
+          >
           </Route>
         </Routes>
       
