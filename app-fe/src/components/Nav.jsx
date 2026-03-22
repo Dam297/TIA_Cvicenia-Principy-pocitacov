@@ -18,6 +18,11 @@ function Nav() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
+                            <Link className="nav-link" to="/students">
+                                Úspešnosť študentov
+                            </Link>
+                        </li>
+                        <li className="nav-item">
                             <Link className="nav-link" to="/list">
                                 Cvičenia a testy
                             </Link>

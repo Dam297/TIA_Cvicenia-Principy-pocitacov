@@ -4,6 +4,7 @@ import SuccessStudentPage from './pages/SuccessStudentPage';
 import ExerciseTestPage from './pages/ExerciseTestPage';
 import DescriptionPage from './pages/DescriptionPage';
 import FinalExerciseTestPage from './pages/FinalExerciseTestPage';
+import SuccessStudentsPage from './pages/SuccessStudentsPage';
 
 
 
@@ -14,26 +15,31 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<SuccessStudentPage/>}
-            >
+            element={<SuccessStudentPage />}
+          >
           </Route>
           <Route
             path="/list"
-            element={<ExerciseTestPage/>}
+            element={<ExerciseTestPage />}
           >
           </Route>
           <Route
             path="/description"
-            element={<DescriptionPage/>}
+            element={<DescriptionPage />}
           >
           </Route>
           <Route
             path="/end"
-            element={<FinalExerciseTestPage/>}
+            element={<FinalExerciseTestPage />}
+          >
+          </Route>
+          <Route
+            path="/students"
+            element={<SuccessStudentsPage />}
           >
           </Route>
         </Routes>
-      
+
       </BrowserRouter>
     </div>
   )
