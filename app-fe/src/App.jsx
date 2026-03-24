@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SuccessStudentPage from './pages/SuccessStudentPage';
 import ExerciseTestPage from './pages/ExerciseTestPage';
 import DescriptionPage from './pages/DescriptionPage';
 import FinalExerciseTestPage from './pages/FinalExerciseTestPage';
 import SuccessStudentsPage from './pages/SuccessStudentsPage';
+import TestQuestionPage from './pages/TestQuestionPage';
 
 
 
@@ -36,6 +36,11 @@ function App() {
           <Route
             path="/students"
             element={<SuccessStudentsPage />}
+          >
+          </Route>
+          <Route
+            path="/test_question"
+            element={<TestQuestionPage />}
           >
           </Route>
         </Routes>
