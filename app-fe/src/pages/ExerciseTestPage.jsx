@@ -1,58 +1,50 @@
 import Nav from "../components/Nav";
 import Header from "../components/Header"
 import DescriptionTestExercise from "../components/DescriptionTestExercise";
-
-
+import { getListExerciseTestUser } from "../services/databaseService";
+import { NEEDSUCCESS } from "../Const";
+import { useState } from "react";
+import { useEffect } from "react";
+import {secondsToNormal} from "../utils/TimeFormate"
 
 function ExerciseTestPage() {
+    const [list, setList] = useState([]);
+
+    // periodically refresh (timer)
+    useEffect(() => {
+        getListExerciseTestUser().then(
+            (list) => setList(list)
+        );
+
+        const fetchMessagesInterval = setInterval(() => {
+            getListExerciseTestUser().then(
+                (list) => setList(list)
+            );
+        }, 2000);
+        return () => clearInterval(fetchMessagesInterval);
+    }, []);
+
     return <>
         <Nav />
         <Header name="Cvičenia a testy" />
         <div className="row align-items-center justify-content-center" >
-            {Object.entries(SAMPLE_EXERCISES_TESTS).map(([key, itm]) => (
-                <DescriptionTestExercise
-                    key={key}
-                    header={itm.name}
-                    paragraphs={itm.description}
-                    needSuccess={itm.need}
-                    maximalTime={itm.time_max}
-                    bestSuccess={itm.best_attempt}
-                    bestSuccessTime={itm.time_best_attempt}
-                    buttonLink={itm.to}
-                />
-            ))}
+            {
+                list.map((itm, i) => (
+                    <DescriptionTestExercise
+                        key={i}
+                        header={itm.name}
+                        paragraphs={itm.description}
+                        needSuccess={Math.floor(itm.count_of_questions * NEEDSUCCESS) + "/"+itm.count_of_questions}
+                        maximalTime={secondsToNormal(itm.max_time_s, true)}
+                        bestSuccess={itm.points}
+                        bestSuccessTime={itm.sec}
+                        buttonLink={"/description"}
+                    />
+                ))
+            }
+
         </div>
     </>;
 }
 
 export default ExerciseTestPage
-
-const SAMPLE_EXERCISES_TESTS = [
-    {
-        name: "Prevod z 2 do 10 sústavy",
-        description: ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec lacinia est, a vulputate eros. Suspendisse dolor turpis, faucibus vel molestie a, rhoncus a eros. Integer pharetra, ex id ultricies convallis, tortor nisi sollicitudin dui, quis mollis sapien lacus ac mi."],
-        need: "6/10",
-        time_max: "20m",
-        best_attempt: "8/10",
-        time_best_attempt: "10m 20s",
-        to: "/description"
-    },
-    {
-        name: "Prevod z 10 do 2 sústavy",
-        description: ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec lacinia est, a vulputate eros. Suspendisse dolor turpis, faucibus vel molestie a, rhoncus a eros. Integer pharetra, ex id ultricies convallis, tortor nisi sollicitudin dui, quis mollis sapien lacus ac mi."],
-        need: "6/10",
-        time_max: "20m",
-        best_attempt: "1/10",
-        time_best_attempt: "20s",
-        to: "/description"
-    },
-    {
-        name: "Test",
-        description: ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec lacinia est, a vulputate eros. Suspendisse dolor turpis, faucibus vel molestie a, rhoncus a eros. Integer pharetra, ex id ultricies convallis, tortor nisi sollicitudin dui, quis mollis sapien lacus ac mi."],
-        need: "6/10",
-        time_max: "45m",
-        best_attempt: "-/10",
-        time_best_attempt: "-",
-        to: "/description"
-    }
-];

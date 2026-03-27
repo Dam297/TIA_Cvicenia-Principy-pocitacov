@@ -6,9 +6,9 @@ function DescriptionTestExercise({header, paragraphs, needSuccess, maximalTime, 
     return (
         <div className="col-10 bg-light p-4 m-3">
             <HeaderSmall name={header} />
-            {Object.entries(paragraphs).map(([key, value]) => (
-                <p key={"p" + key} className="row m-0">{value}</p>
-            ))}
+            {
+                <p className="row m-0">{paragraphs}</p>
+            }
 
             <div className="row m-0">
                 <div className="col-5 p-0">

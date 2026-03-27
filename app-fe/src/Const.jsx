@@ -1,0 +1,2 @@
+const NEEDSUCCESS = 6/10;
+export {NEEDSUCCESS}
