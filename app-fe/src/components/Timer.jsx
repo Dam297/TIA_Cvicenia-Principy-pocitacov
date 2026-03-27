@@ -3,8 +3,10 @@
 
 import { useState } from 'react'
 import { useEffect } from 'react'
+import {secondsToNormal} from '../utils/TimeFormate'
 
 const INTERVAL_IN_MILISECONDS = 1000;
+
 
 function Timer (numSec) {
     const [time, setTime] = useState(numSec*1000);
@@ -39,20 +41,12 @@ function Timer (numSec) {
         setTimeout(count, INTERVAL_IN_MILISECONDS);
     }, [time]);
 
-    let seconds = (time / 1000).toFixed(0);
-    let hours = Math.floor(seconds / 3600);
-    let mins = Math.floor((seconds - hours * 3600) / 60);
-    let secondsLeft = seconds - hours * 3600 - mins * 60;
 
-    var answer = (countDown ? "" : "-");
-    answer += (hours < 10 ? "0" + hours : hours);
-    answer += ":" + (mins < 10 ? "0" + mins : mins);
-    answer += ":" + (secondsLeft < 10 ? "0" + secondsLeft : secondsLeft);
-
+    let answer = secondsToNormal((time / 1000).toFixed(0), countDown);
 
     return <>
         {
-            answer
+           answer
         }
     </>;
 }
