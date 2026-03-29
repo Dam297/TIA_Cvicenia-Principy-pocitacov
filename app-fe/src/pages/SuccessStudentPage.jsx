@@ -1,11 +1,49 @@
 import Nav from "../components/Nav";
 import Header from "../components/Header"
 import Table from "../components/Table";
+import { getSuccessExerciseTestUser } from "../services/databaseService";
+import { NEEDSUCCESS } from "../Const";
+import { useState } from "react";
+import { useEffect } from "react";
+import { secondsToNormal } from "../utils/TimeFormate"
 
 
 function SuccessStudentPage() {
-    let headerRow = SAMPLE_SUCCESS_STUDENT[0];
-    let rowsObj = SAMPLE_SUCCESS_STUDENT.slice(1);
+    const [rowsObj, setRowsObj] = useState([]);
+    function processData(list) {
+        const output = list.map(item => {
+            const result = {};
+            const score = item["points"] / item["count_of_questions"];
+            let b = (score >= NEEDSUCCESS) ? 1 : 0;
+
+            result["name"] = [item["name"], b];
+            result["best_attempt"] = [((item["points"] === null) ? "" : item["points"]) + "/" + item["count_of_questions"], b];
+            result["time_best_attempt"] = [((item["sec"] === null) ? "" : secondsToNormal(item["sec"], true)), b];
+            return result;
+        });
+        return output;
+    }
+
+    // periodically refresh (timer)
+    useEffect(() => {
+        getSuccessExerciseTestUser().then(
+            (list) => setRowsObj(processData(list))
+        );
+
+        const fetchMessagesInterval = setInterval(() => {
+            getSuccessExerciseTestUser().then(
+                (list) => setRowsObj(processData(list))
+            );
+        }, 2000);
+        return () => clearInterval(fetchMessagesInterval);
+    }, []);
+
+    let headerRow = {
+        "name": "Názov",
+        "best_attempt": "Najúspešnejší pokus",
+        "time_best_attempt": "Trvanie najúspešnejšieho pokusu"
+    };
+
     return <>
         <Nav />
         <Header name="Hodnotenie" />
@@ -14,27 +52,3 @@ function SuccessStudentPage() {
 }
 
 export default SuccessStudentPage
-
-
-const SAMPLE_SUCCESS_STUDENT = [
-    {
-        name: "Názov",
-        best_attempt: "Najúspešnejší pokus",
-        time_best_attempt: "Trvanie najúspešnejšieho pokusu"
-    },
-    {
-        name: ["Prevod z 2 do 10 sústavy", 1],
-        best_attempt: ["8/10", 1],
-        time_best_attempt: ["10m 20s", 1]
-    },
-    {
-        name: ["Prevod z 10 do 2 sústavy", 0],
-        best_attempt: ["1/10", 0],
-        time_best_attempt: ["20s", 0]
-    },
-    {
-        name: ["Test", 0],
-        best_attempt: ["-/10", 0],
-        time_best_attempt: ["-", 0]
-    }
-];

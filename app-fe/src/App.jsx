@@ -5,7 +5,6 @@ import DescriptionPage from './pages/DescriptionPage';
 import FinalExerciseTestPage from './pages/FinalExerciseTestPage';
 import SuccessStudentsPage from './pages/SuccessStudentsPage';
 import TestQuestionPage from './pages/TestQuestionPage';
-import { getListExerciseTestUser } from "./services/databaseService"
 
 
 function App() {
@@ -20,7 +19,7 @@ function App() {
           </Route>
           <Route
             path="/list"
-            element={<ExerciseTestPage list={getListExerciseTestUser()}/>}
+            element={<ExerciseTestPage />}
           >
           </Route>
           <Route

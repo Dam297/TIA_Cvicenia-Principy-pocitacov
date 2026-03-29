@@ -1,5 +1,4 @@
 import Button from "./Button";
-import Header from "./Header";
 import HeaderSmall from "./HeaderSmall";
 
 function DescriptionTestExercise({header, paragraphs, needSuccess, maximalTime, bestSuccess, bestSuccessTime, buttonLink}) {

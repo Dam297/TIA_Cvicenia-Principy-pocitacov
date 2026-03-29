@@ -28,7 +28,7 @@ function Table({ header_orig, rows }) {
                     <TableHeader header={header_orig} />
                     <tbody>
                         {Object.entries(rows).map(([key, value]) => (
-                            <TableRow row={value} />
+                            <TableRow key={key} row={value} />
                         ))}
                     </tbody>
                 </table>
