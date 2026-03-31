@@ -129,3 +129,54 @@ exports.getSuccessExerciseTestUser = function () {
 };
 
 
+exports.getStudents = function () {
+	return pool.query(`
+		SELECT 
+			"user_id",
+			"login",
+			"name"
+		FROM 
+		public."Users"
+		WHERE "user_role" = 'student'	
+`)
+};
+
+exports.getExercises = function () {
+	return pool.query(`
+		SELECT 
+			"exercise_id",
+			"name",
+			"count_of_questions",
+			"enabled"
+		FROM 
+		public."Exercises"
+`)
+};
+
+exports.getTests = function () {
+	return pool.query(`
+		SELECT 
+			t."test_id",
+			t."name",
+			t."enabled", 
+			COUNT(tq."test_question_id") AS "count_of_questions"
+		FROM
+		public."Tests" AS t
+		JOIN public."Test_questions" AS tq
+		ON t."test_id" = tq."test_id" 
+		GROUP BY t."test_id", t."name", t."enabled"
+`)
+};
+
+exports.getBestTestAttempt = function (param) {
+	return pool.query(`SELECT * FROM public."View_test_best_attempts" WHERE "user_id" = $1 AND "test_id" = $2`,
+		[param.user_id, param.test_id])
+
+};
+
+exports.getBestExerciseAttempt = function (param) {
+	return pool.query(`SELECT * FROM public."View_exercise_best_attempts" WHERE "user_id" = $1 AND "exercise_id" = $2`,
+		[param.user_id, param.test_id])
+
+};
+
