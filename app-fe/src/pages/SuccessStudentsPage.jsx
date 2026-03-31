@@ -1,47 +1,112 @@
 import Nav from "../components/Nav";
 import Header from "../components/Header"
 import Table from "../components/Table";
+import { getBestTestAttempt } from "../services/databaseService";
+import { getBestExerciseAttempt } from "../services/databaseService";
+import { getExercises } from "../services/databaseService";
+import { getTests } from "../services/databaseService";
+import { getStudents } from "../services/databaseService";
+import { useState } from "react";
+import { useEffect } from "react";
+import { NEEDSUCCESS } from "../Const";
 
 
 function SuccessStudentsPage() {
-    let headerRow = SAMPLE_SUCCESS_STUDENTS[0];
-    let rowsObj = SAMPLE_SUCCESS_STUDENTS.slice(1);
+    const [headerRow, setHeaderRow] = useState([])
+    const [rowsArr, setRowsArr] = useState([])
+
+
+    async function loadExerciseForStudent(student_id, exercise_id, count_of_questions) {
+        const attempt = await getBestExerciseAttempt({
+            "user_id": student_id,
+            "exercise_id": exercise_id,
+
+        });
+        const maximum = count_of_questions;
+        const correct = attempt["count_correct"];
+        const score = correct / maximum;
+        let b = (score >= NEEDSUCCESS) ? true : false;
+
+        return [((correct == null) ? "" : correct) + "/" + maximum, b];
+    }
+
+    async function loadTestForStudent(student_id, test_id, count_of_questions) {
+        const attempt = await getBestTestAttempt({
+            "user_id": student_id,
+            "test_id": test_id,
+
+        });
+        const maximum = count_of_questions;
+        const correct = attempt["count_correct"];
+        const score = correct / maximum;
+        let b = (score >= NEEDSUCCESS) ? true : false;
+
+        return [((correct == null) ? "" : correct) + "/" + maximum, b];
+    }
+
+
+    async function loadData() {
+        const students = await getStudents();
+        const exercises = await getExercises();
+        const tests = await getTests();
+
+        setHeaderRow([
+            "Meno", "Login",
+            ...(exercises.map((value => value["name"]))),
+            ...(tests.map((value => value["name"]))),
+            "Zhrnutie"
+        ]);
+
+        let rowsArr = [];
+        let j = 0;
+
+        for (const student of students) {
+            let newRow = [];
+            let i = 2;
+            let student_id = student["user_id"];
+            let student_name = student["name"];
+            let student_login = student["login"];
+            let success = true;
+
+            for (const exercise of exercises) {
+                newRow[i] = await loadExerciseForStudent(student_id, exercise["exercise_id"], exercise["count_of_questions"]);
+                if (newRow[i][1] === false) {
+                    success = false;
+                }
+                i++;
+            }
+            
+            for (const test of tests) {
+                newRow[i] = await loadTestForStudent(student_id, test["test_id"], test["count_of_questions"]);
+                if (newRow[i][1] === false) {
+                    success = false;
+                }
+                i++;
+            }
+            
+            newRow[0] = [student_name, success];
+            newRow[1] = [student_login, success];
+            newRow[i] = [(success) ? "OK": "Fx" , success];
+            rowsArr[j++] = newRow;
+        }
+
+        setRowsArr(rowsArr);
+    }
+
+    // periodically refresh (timer)
+    useEffect(() => {
+        loadData();
+        const fetchMessagesInterval = setInterval(() => {
+            loadData();
+        }, 10000);
+        return () => clearInterval(fetchMessagesInterval);
+    }, []);
+
     return <>
         <Nav />
         <Header name="Úspešnosť študentov" />
-        <Table header_orig={headerRow} rows={rowsObj} />
+        <Table header_orig={headerRow} rows={rowsArr} />
     </>;
 }
 
 export default SuccessStudentsPage
-
-const SAMPLE_SUCCESS_STUDENTS = [
-    {
-       name: "Meno",
-       login: "Login",
-       exercise1: "Prevod z 2 do 10 sústavy ",
-       exercise2: "Prevod z 10 do 2 sústavy",
-       exercise3: "Test",
-       summary: "Zhrnutie"
-    },
-    
-    {
-       name: ["Janko Hráško", 0],
-       login: ["hrasko1", 0],
-       exercise1 : ["8/10", 1], 
-       exercise2: ["1/10", 0], 
-       exercise3: ["-", 0],
-       summary: ["Fx", 0]
-    },
-    {
-       name: ["Admin Admin", 1],
-       login: ["admin1", 1],
-       exercise1: ["10/10", 1], 
-       exercise2: ["10/10", 0], 
-       exercise3: ["10/10", 0],
-       summary: ["OK", 1]
-    }
-     
-];
-
-
