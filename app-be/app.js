@@ -10,6 +10,9 @@ var exercisesRouter = require('./routes/api_v1/exercises')
 var testsRouter = require('./routes/api_v1/tests')
 var bestTestAttemptRouter = require('./routes/api_v1/bestTestAttempt')
 var bestExerciseAttemptRouter = require('./routes/api_v1/bestExerciseAttempt')
+var testDescriptionRouter = require('./routes/api_v1/testDescription')
+var exerciseDescriptionRouter = require('./routes/api_v1/exerciseDescription')
+
 
 
 
@@ -29,6 +32,9 @@ app.use('/api/v1/exercises', exercisesRouter);
 app.use('/api/v1/tests', testsRouter);
 app.use('/api/v1/best_test_attempt', bestTestAttemptRouter);
 app.use('/api/v1/best_exercise_attempt', bestExerciseAttemptRouter);
+app.use('/api/v1/test_description', testDescriptionRouter);
+app.use('/api/v1/exercise_description', exerciseDescriptionRouter);
+
 
 
 module.exports = app;
