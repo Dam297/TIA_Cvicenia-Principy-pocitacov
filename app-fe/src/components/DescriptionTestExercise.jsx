@@ -1,7 +1,7 @@
 import Button from "./Button";
 import HeaderSmall from "./HeaderSmall";
 
-function DescriptionTestExercise({header, paragraphs, needSuccess, maximalTime, bestSuccess, bestSuccessTime, buttonLink}) {
+function DescriptionTestExercise({header, paragraphs, needSuccess, maximalTime, bestSuccess, bestSuccessTime, buttonLink, onClickButton}) {
     return (
         <div className="col-10 bg-light p-4 m-3">
             <HeaderSmall name={header} />
@@ -27,7 +27,7 @@ function DescriptionTestExercise({header, paragraphs, needSuccess, maximalTime, 
                     <p><strong>Trvanie najúspešnejšieho pokusu: {bestSuccessTime}</strong></p>
                 </div>
                 <div className="col-2 p-1">
-                    <Button text={"Spustiť"} where={buttonLink}/>
+                    <Button text={"Spustiť"} where={buttonLink} onClickButton={onClickButton}/>
                 </div>
             </div>
         </div>

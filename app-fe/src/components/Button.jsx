@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-function Button({ text, where }) {
+function Button({ text, where, onClickButton}) {
     return (
-        <Link className="btn btn-primary" to={where}>
+        <Link className="btn btn-primary" to={where} onClick={onClickButton}>
             {text}
         </Link>
     );

@@ -103,5 +103,44 @@ function getBestExerciseAttempt(param) {
         });
 }
 
-export { getListExerciseTestUser, getSuccessExerciseTestUser, getBestTestAttempt, getBestExerciseAttempt, getExercises, getTests, getStudents }
+function getExerciseDescription(param) {
+    return fetch("/api/v1/exercise_description", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param)
+    }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list" + response);
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+function getTestDescription(param) {
+    return fetch("/api/v1/test_description", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param)
+    }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list" + response);
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+
+export { getListExerciseTestUser, getSuccessExerciseTestUser, getBestTestAttempt, getBestExerciseAttempt, getExercises, getTests, getStudents, getExerciseDescription, getTestDescription }
 

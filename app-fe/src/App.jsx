@@ -5,9 +5,13 @@ import DescriptionPage from './pages/DescriptionPage';
 import FinalExerciseTestPage from './pages/FinalExerciseTestPage';
 import SuccessStudentsPage from './pages/SuccessStudentsPage';
 import TestQuestionPage from './pages/TestQuestionPage';
+import { useState } from "react";
 
 
 function App() {
+  const [par, setPar] = useState([]);  
+
+
   return (
     <div className="container">
       <BrowserRouter>
@@ -19,12 +23,12 @@ function App() {
           </Route>
           <Route
             path="/list"
-            element={<ExerciseTestPage />}
+            element={<ExerciseTestPage setPar={setPar} />}
           >
           </Route>
           <Route
             path="/description"
-            element={<DescriptionPage />}
+            element={<DescriptionPage par={par} setPar={setPar}/>}
           >
           </Route>
           <Route

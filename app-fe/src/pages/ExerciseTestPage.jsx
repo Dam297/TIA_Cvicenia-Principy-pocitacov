@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import {secondsToNormal} from "../utils/TimeFormate"
 
-function ExerciseTestPage() {
+function ExerciseTestPage({setPar}) {
     const [list, setList] = useState([]);
 
     // periodically refresh (timer)
@@ -39,10 +39,10 @@ function ExerciseTestPage() {
                         bestSuccess={itm.points}
                         bestSuccessTime={itm.sec}
                         buttonLink={"/description"}
+                        onClickButton={() => {return setPar({"DescriptionPage" : {"id" : itm.id, "is_exercise" : itm.is_exercise}})}}
                     />
                 ))
             }
-
         </div>
     </>;
 }
