@@ -255,5 +255,24 @@ function endTest(param) {
         });
 }
 
-export { getListExerciseTestUser, getSuccessExerciseTestUser, getBestTestAttempt, getBestExerciseAttempt, getExercises, getTests, getStudents, getExerciseDescription, getTestDescription, insertNewTestAttempt, getTestQuestion, getTestOptions, getTestAttempt, endTestQuestion, endTest }
+function getFinalTestAttempt(param) {
+    return fetch("/api/v1/get_final_test_attempt", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param)
+    }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list" + response);
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+export { getListExerciseTestUser, getSuccessExerciseTestUser, getBestTestAttempt, getBestExerciseAttempt, getExercises, getTests, getStudents, getExerciseDescription, getTestDescription, insertNewTestAttempt, getTestQuestion, getTestOptions, getTestAttempt, endTestQuestion, endTest, getFinalTestAttempt }
 

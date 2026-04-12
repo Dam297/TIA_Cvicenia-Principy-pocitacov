@@ -33,7 +33,7 @@ function App() {
           </Route>
           <Route
             path="/end"
-            element={<FinalExerciseTestPage />}
+            element={<FinalExerciseTestPage par={par} setPar={setPar}/>}
           >
           </Route>
           <Route

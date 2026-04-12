@@ -28,7 +28,6 @@ function TestQuestionPage({par, setPar}) {
     const fetched = useRef(false);
 
     let id = -1;
-    console.log(par);
     if(par["TestID"] != null){
         id = par["TestID"];
     }
