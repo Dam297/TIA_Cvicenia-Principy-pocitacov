@@ -62,7 +62,7 @@ CREATE VIEW "View_test_answer_points" AS
 				THEN 1
     		WHEN 
 				(	/* pouzivatel neodpovedal na danu otazku */
-					SELECT TRUE
+					SELECT DISTINCT FALSE
 					FROM public."Test_question_option_answers" AS tqoa
 					WHERE tqoa."test_question_answer_id" = tqa."test_question_answer_id"		
 				)
@@ -70,7 +70,6 @@ CREATE VIEW "View_test_answer_points" AS
     		ELSE -2
 			END AS "points"
 	FROM "Test_question_answers" AS tqa;
-
 
 	
 CREATE VIEW "View_test_best_attempts" AS

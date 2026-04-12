@@ -254,3 +254,95 @@ exports.getBestExerciseAttempt = function (param) {
 
 };
 
+exports.getStartedTestAttempt = function (param) {
+	return pool.query(`SELECT ta."test_attempts_id"
+		FROM public."Test_attempts" AS ta 
+		WHERE ta."end" IS null
+		AND ta."test_id" = $1
+		AND ta."user_id" = $2
+		ORDER BY test_attempts_id ASC `,
+		[param.test_id, param.user_id])
+};
+
+exports.newTestAttempt = function (param) {
+	return pool.query(`INSERT INTO public."Test_attempts" ("test_id", "user_id", "start") VALUES ($1, $2, NOW())`,
+		[param.test_id, param.user_id])
+};
+
+exports.getTestQuestion = function (param) {
+	return pool.query(`
+		SELECT *
+FROM (	
+	SELECT COUNT(1) AS "count_maximum"
+	FROM public."Test_questions" AS tq
+	WHERE tq."test_id" = $1)
+CROSS JOIN (
+	SELECT COUNT(1) AS "count_actual"
+	FROM public."Test_question_answers" AS tqa
+	WHERE tqa."test_attempt_id" = $2)
+CROSS JOIN (
+	SELECT tq."test_question_id", tqa."test_question_answer_id", tq."question"
+	FROM public."Test_questions" AS tq
+	LEFT JOIN 
+	(
+		SELECT *
+		FROM public."Test_question_answers" AS tqa2
+		WHERE tqa2."test_attempt_id" = $2
+	) AS tqa
+	ON tqa."test_question_id" = tq."test_question_id" 
+	WHERE tq."test_id" = $1
+	
+	AND tqa."end" IS NULL
+	ORDER BY tqa."start" ASC, tqa."test_attempt_id" ASC, RANDOM()
+	LIMIT 1
+	);
+    `,
+		[param.test_id, param.test_attempt_id])
+};
+
+
+exports.getTestOptions = function (param) {
+	return pool.query(`SELECT tqa."test_question_option_id", tqa."option"
+FROM public."Test_question_options" AS tqa
+WHERE tqa."test_question_id" = $1
+ORDER BY Random()`,
+		[param.test_question_id]
+	)
+};
+
+exports.startTestQuestion = function (param) {
+	return pool.query(`	INSERT INTO public."Test_question_answers" ("test_attempt_id", "test_question_id", "start") VALUES ($1, $2, NOW()) RETURNING public."Test_question_answers"."test_question_answer_id";`,
+		[param.test_attempt_id, param.test_question_id])
+};
+
+
+exports.endTestQuestion = function (param) {
+	return pool.query(`UPDATE public."Test_question_answers" SET "end" = NOW() WHERE "test_question_answer_id" = $1;`,
+		[param.test_question_answer_id])
+};
+
+exports.setAnswerTestQuestion = function (option, answer) {
+	return pool.query(`INSERT INTO public."Test_question_option_answers" (test_question_option_id, test_question_answer_id) VALUES ($1, $2)`,
+		[option, answer])
+};
+
+exports.endTest = function (param) {
+	return pool.query(`UPDATE public."Test_attempts" as ta SET "end" = (
+		SELECT tqa."end"
+		FROM public."Test_question_answers" as tqa
+		WHERE tqa."test_attempt_id" = $1
+		ORDER BY tqa."end" DESC
+		LIMIT 1
+		)
+		WHERE ta."test_attempts_id" = $1;`,
+		[param.test_attempt_id])
+};
+
+exports.getTestAttempt = function (param) {
+	return pool.query(`
+	SELECT ta."start", t."max_time_s"
+	FROM public."Test_attempts" AS ta
+	JOIN public."Tests" AS t ON t."test_id" = t."test_id"
+	WHERE ta."test_attempts_id" = $1;`,
+		[param.test_attempt_id])
+};

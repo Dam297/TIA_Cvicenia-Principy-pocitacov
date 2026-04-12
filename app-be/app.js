@@ -12,8 +12,12 @@ var bestTestAttemptRouter = require('./routes/api_v1/bestTestAttempt')
 var bestExerciseAttemptRouter = require('./routes/api_v1/bestExerciseAttempt')
 var testDescriptionRouter = require('./routes/api_v1/testDescription')
 var exerciseDescriptionRouter = require('./routes/api_v1/exerciseDescription')
-
-
+var insertNewTestAttemptRouter = require('./routes/api_v1/insertNewTestAttempt')
+var getTestQuestionRouter = require('./routes/api_v1/getTestQuestion')
+var getTestOptionsRouter = require('./routes/api_v1/getTestOptions')
+var getTestAttemptRouter = require('./routes/api_v1/getTestAttempt')
+var endTestQuestionRouter = require('./routes/api_v1/endTestQuestion')
+var endTestRouter = require('./routes/api_v1/endTest')
 
 
 
@@ -34,6 +38,13 @@ app.use('/api/v1/best_test_attempt', bestTestAttemptRouter);
 app.use('/api/v1/best_exercise_attempt', bestExerciseAttemptRouter);
 app.use('/api/v1/test_description', testDescriptionRouter);
 app.use('/api/v1/exercise_description', exerciseDescriptionRouter);
+app.use('/api/v1/insert_new_test_attempt', insertNewTestAttemptRouter);
+app.use('/api/v1/get_test_question', getTestQuestionRouter);
+app.use('/api/v1/get_test_options', getTestOptionsRouter);
+app.use('/api/v1/get_test_attempt', getTestAttemptRouter);
+app.use('/api/v1/end_test_question', endTestQuestionRouter);
+app.use('/api/v1/end_test', endTestRouter);
+
 
 
 
