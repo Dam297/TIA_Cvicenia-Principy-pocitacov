@@ -43,7 +43,7 @@ function App() {
           </Route>
           <Route
             path="/test_question"
-            element={<TestQuestionPage />}
+            element={<TestQuestionPage par={par} setPar={setPar}/>}
           >
           </Route>
         </Routes>

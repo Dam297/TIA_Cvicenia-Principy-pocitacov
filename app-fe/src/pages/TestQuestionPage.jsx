@@ -1,20 +1,82 @@
 import Nav from "../components/Nav";
-import Header from "../components/Header";
 import Timer from "../components/Timer";
 import { useState } from 'react'
 import { Navigate } from "react-router-dom";
+import { getTestQuestion } from "../services/databaseService";
+import { getTestOptions } from "../services/databaseService";
+import { useEffect, useRef } from "react";
+import { endTestQuestion } from "../services/databaseService";
+import { endTest } from "../services/databaseService";
+import { getTestAttempt } from "../services/databaseService";
+
+function secondsRemaining(date, sec) {
+    const now = Date.now();
+    const targetPlusX = new Date(date).getTime() + sec * 1000;
+    return Math.floor((targetPlusX - now) / 1000);
+}
 
 
+function TestQuestionPage({par, setPar}) {
+    const [numberQuestion, setNumberQuestion] = useState(0);
+    const [countQuestion, setCountQuestion] = useState(0);
+    const [question, setQuestion] = useState("");
+    const [testQuestionAnswerId, setTestQuestionAnswerId] = useState("");
+    const [options, setOptions] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState(new Set());
+    const [navigateTo, setNavigateTo] = useState("");
+    const [time, setTime] = useState(10);
+    const fetched = useRef(false);
+
+    let id = -1;
+    console.log(par);
+    if(par["TestID"] != null){
+        id = par["TestID"];
+    }
+
+    function setSet(prevSet, item) {
+        const key = JSON.stringify(item);
+        const next = new Set(prevSet);
+
+        if (next.has(key)) {
+            next.delete(key);
+        } else {
+            next.add(key);
+        }
+
+        return next;
+    }
 
 
+    function getDataQuestion() {
+        getTestQuestion({ "test_id": id, "user_id": 1 }).then(
+            (list) => {
+                setTestQuestionAnswerId(Number(list[0]["test_question_answer_id"]));
+                setNumberQuestion(Number(list[0]["count_actual"]));
+                setCountQuestion(Number(list[0]["count_maximum"]));
+                setQuestion(list[0]["question"]);
+                getTestOptions({ "test_question_id": list[0]["test_question_id"] }).then(
+                    (list2) => {
+                        setOptions(list2);
+                    }
+                )
+            }
+        )
+    }
 
-function TestQuestionPage() {
-    const [numberQuestion, setNumberQuestion] = useState(0)
-    const [navigateTo, setNavigateTo] = useState("")
+    function getTime() {
+        getTestAttempt({ "test_id": id, "user_id": 1 }).then(
+            (list) => {
+                setTime(secondsRemaining(list[0]["start"], list[0]["max_time_s"]));
+            }
+        );
+    }
 
-
-    let test = SAMPLE_TEST_DESCRIPTION
-    let question = SAMPLE_TEST_QUESTIONS[numberQuestion]
+    useEffect(() => {
+        if (fetched.current) return;
+        fetched.current = true;
+        getDataQuestion();
+        getTime();
+    }, []);
 
 
     function setFalse() {
@@ -26,10 +88,15 @@ function TestQuestionPage() {
     }
 
     function afterSubmit() {
+        endTestQuestion({ "test_question_answer_id": testQuestionAnswerId, "answered_options": [...selectedOptions] }).then(
+            setSelectedOptions(new Set())
+        );
         setFalse();
-        if ((numberQuestion + 1) >= test.count) {
+        if ((numberQuestion + 1) > countQuestion) {
+            endTest({ "test_id": id, "user_id": 1 });
             setNavigateTo("../end")
         } else {
+            getDataQuestion();
             setNumberQuestion(numberQuestion + 1);
         }
     }
@@ -37,37 +104,35 @@ function TestQuestionPage() {
     return <>
         <Navigate to={navigateTo} />
         <Nav />
-        <Header name={test.name} />
         <div className="row align-items-center justify-content-center" >
             <div className="col-10 bg-light p-4 m-3">
                 <div className="row m-0">
                     <div className="col-6 m-0 p-0">
-                        <h3 className="text-start">{numberQuestion + 1}/{test.count}</h3>
+                        <h3 className="text-start">{numberQuestion}/{countQuestion}</h3>
                     </div>
                     <div className="col-6 m-0 p-0">
-                        <p className="text-end">Zostavajúci čas: {Timer(test.time)}</p>
+                        <p className="text-end">Zostavajúci čas: <Timer numSec={time} /></p>
                     </div>
                 </div>
 
-                <p className="row m-0 font-weight-bold">{question.question}</p>
+                <p className="row m-0 font-weight-bold">{question}</p>
                 <div className="row m-1">
                 </div>
 
-                {Object.entries(question.options).map(([key, value]) => (
+                {Object.entries(options).map(([key, value]) => (
                     <div key={key}>
-                        <div className="btn-group-toggle m-1" role="group">
+                        <div className="btn-group-toggle m-1" role="group" >
                             <input id={key} type="checkbox" className="btn-check" autoComplete="off"></input>
-                            <label className="btn btn-lg btn-secondary w-100 text-start" htmlFor={key}>
-                                {value}
+                            <label className="btn btn-lg btn-secondary w-100 text-start" htmlFor={key} onClick={() => { setSelectedOptions(selectedOptions => setSet(selectedOptions, value["test_question_option_id"])) }}>
+                                {value["option"]}
                             </label>
                         </div>
                     </div>
                 ))}
 
-
                 <div className="row m-2 justify-content-end">
                     <div className="col-auto p-0">
-                        <a type="button" className="btn btn-primary" onClick={afterSubmit}>Ulož odpoveď a choď ďalej</a>
+                        <a type="button" className="btn btn-primary" onClick={() => { afterSubmit() }}>Ulož odpoveď a choď ďalej</a>
                     </div>
                 </div>
             </div>
@@ -77,24 +142,3 @@ function TestQuestionPage() {
 
 export default TestQuestionPage
 
-
-const SAMPLE_TEST_DESCRIPTION =
-{
-    time: 2400,
-    count: 3
-}
-
-const SAMPLE_TEST_QUESTIONS = [
-    {
-        question: "Koľko je 10 + 10?",
-        options: ["a) 20", "b) 0", "c) 100", "d) 10"]
-    },
-    {
-        question: "Koľko je 10 - 10?",
-        options: ["a) 0", "b) 10", "c) 100", "d) 20"]
-    },
-    {
-        question: "Koľko je 10 * 10?",
-        options: ["a) 20", "b) 100", "c) 0", "d) 10"]
-    }
-];

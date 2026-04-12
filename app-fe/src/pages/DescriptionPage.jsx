@@ -2,6 +2,7 @@ import Nav from "../components/Nav";
 import DescriptionTestExercise from "../components/DescriptionTestExercise";
 import { getExerciseDescription } from "../services/databaseService";
 import { getTestDescription } from "../services/databaseService";
+import { insertNewTestAttempt } from "../services/databaseService";
 import { secondsToNormal } from "../utils/TimeFormate"
 import { NEEDSUCCESS } from "../Const";
 import { useState } from "react";
@@ -57,7 +58,7 @@ function DescriptionPage({par, setPar}) {
                 bestSuccess={(descr.points === null) ? "" : descr.points + "/" + descr.count_of_questions}
                 bestSuccessTime={(descr.sec === null) ? "" : secondsToNormal(descr.sec, true)}
                 buttonLink={(isExercise === true) ? "../exercise_" + id : "../test_question"}
-                onClickButton={(isExercise) ? () => {return setPar({"ExerciseID": descr.id})} : () => {return setPar({"TestID": descr.id})}}
+                onClickButton={(isExercise) ? () => {setPar({"ExerciseID": id})} : () => {setPar({"TestID": id}); insertNewTestAttempt({ "user_id": 1, "test_id": id }) }}
             />
         </div>
     </>;
