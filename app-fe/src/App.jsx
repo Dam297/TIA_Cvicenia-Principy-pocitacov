@@ -5,6 +5,7 @@ import DescriptionPage from './pages/DescriptionPage';
 import FinalExerciseTestPage from './pages/FinalExerciseTestPage';
 import SuccessStudentsPage from './pages/SuccessStudentsPage';
 import TestQuestionPage from './pages/TestQuestionPage';
+import LoginPage from './pages/LoginPage';
 import { useState } from "react";
 
 
@@ -44,6 +45,11 @@ function App() {
           <Route
             path="/test_question"
             element={<TestQuestionPage par={par} setPar={setPar}/>}
+          >
+          </Route>
+          <Route
+            path="/login"
+            element={<LoginPage />}
           >
           </Route>
         </Routes>
