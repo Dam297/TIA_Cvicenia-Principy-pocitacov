@@ -264,6 +264,17 @@ exports.getStartedTestAttempt = function (param) {
 		[param.test_id, param.user_id])
 };
 
+exports.getLastTestAttempt = function (param) {
+	return pool.query(`SELECT ta."test_attempts_id"
+		FROM public."Test_attempts" AS ta 
+		WHERE ta."end" IS NOT null
+		AND ta."test_id" = $1
+		AND ta."user_id" = $2
+		ORDER BY ta."end" DESC 
+		LIMIT 1`,
+		[param.test_id, param.user_id])
+};
+
 exports.newTestAttempt = function (param) {
 	return pool.query(`INSERT INTO public."Test_attempts" ("test_id", "user_id", "start") VALUES ($1, $2, NOW())`,
 		[param.test_id, param.user_id])
@@ -346,3 +357,23 @@ exports.getTestAttempt = function (param) {
 	WHERE ta."test_attempts_id" = $1;`,
 		[param.test_attempt_id])
 };
+
+exports.getFinalTestAttempt = function (param) {
+	return pool.query(`
+	SELECT * FROM (
+		SELECT
+		SUM(CASE WHEN vtap."points" = -1 THEN 1 ELSE 0 END) AS "count_empty",
+		SUM(CASE WHEN vtap."points" = -2 THEN 1 ELSE 0 END) AS "count_incorrect",
+		SUM(CASE WHEN vtap."points" = 1 THEN 1 ELSE 0 END) AS "count_correct"
+		FROM public."View_test_answer_points" as vtap
+		WHERE vtap."test_attempt_id" = $1
+		)
+	CROSS JOIN(
+		SELECT t."name",
+		EXTRACT(EPOCH FROM (ta."end" - ta."start")) AS "sec"
+		FROM public."Tests" AS t 
+		JOIN public."Test_attempts" AS ta ON t."test_id" = ta."test_id"
+		WHERE ta."test_attempts_id" = $1
+	)`, [param.test_attempt_id])
+};
+

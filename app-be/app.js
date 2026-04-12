@@ -16,6 +16,7 @@ var insertNewTestAttemptRouter = require('./routes/api_v1/insertNewTestAttempt')
 var getTestQuestionRouter = require('./routes/api_v1/getTestQuestion')
 var getTestOptionsRouter = require('./routes/api_v1/getTestOptions')
 var getTestAttemptRouter = require('./routes/api_v1/getTestAttempt')
+var getFinalTestAttemptRouter = require('./routes/api_v1/getFinalTestAttempt')
 var endTestQuestionRouter = require('./routes/api_v1/endTestQuestion')
 var endTestRouter = require('./routes/api_v1/endTest')
 
@@ -44,6 +45,8 @@ app.use('/api/v1/get_test_options', getTestOptionsRouter);
 app.use('/api/v1/get_test_attempt', getTestAttemptRouter);
 app.use('/api/v1/end_test_question', endTestQuestionRouter);
 app.use('/api/v1/end_test', endTestRouter);
+app.use('/api/v1/get_final_test_attempt', getFinalTestAttemptRouter);
+
 
 
 
