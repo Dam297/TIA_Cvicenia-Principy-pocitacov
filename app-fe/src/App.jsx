@@ -6,6 +6,7 @@ import FinalExerciseTestPage from './pages/FinalExerciseTestPage';
 import SuccessStudentsPage from './pages/SuccessStudentsPage';
 import TestQuestionPage from './pages/TestQuestionPage';
 import LoginPage from './pages/LoginPage';
+import ExercisePage from './pages/ExercisePage';
 import { useState } from "react";
 
 
@@ -50,6 +51,11 @@ function App() {
           <Route
             path="/login"
             element={<LoginPage />}
+          >
+          </Route>
+          <Route
+            path="/exercise"
+            element={<ExercisePage />}
           >
           </Route>
         </Routes>

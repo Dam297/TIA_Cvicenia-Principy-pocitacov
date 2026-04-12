@@ -57,7 +57,7 @@ function DescriptionPage({par, setPar}) {
                 maximalTime={(descr.max_time_s === null) ? "" : secondsToNormal(descr.max_time_s, true)}
                 bestSuccess={(descr.points === null) ? "" : descr.points + "/" + descr.count_of_questions}
                 bestSuccessTime={(descr.sec === null) ? "" : secondsToNormal(descr.sec, true)}
-                buttonLink={(isExercise === true) ? "../exercise_" + id : "../test_question"}
+                buttonLink={(isExercise === true) ? "../exercise" : "../test_question"}
                 onClickButton={(isExercise) ? () => {setPar({"ExerciseID": id})} : () => {setPar({"TestID": id}); insertNewTestAttempt({ "user_id": 1, "test_id": id }) }}
             />
         </div>
