@@ -155,6 +155,19 @@ CREATE TABLE IF NOT EXISTS public."Users"
     CONSTRAINT "Users_pkey" PRIMARY KEY (user_id)
 );
 
+-- required by connect-pg-simple (storing sessions in DB)
+DROP TABLE IF EXISTS "session";
+CREATE TABLE IF NOT EXISTS "session" (
+  "sid" varchar NOT NULL COLLATE "default",
+  "sess" json NOT NULL,
+  "expire" timestamp(6) NOT NULL
+)
+WITH (OIDS=FALSE); -- do not add the hidden OID column / backward compatibility
+
+ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid");
+CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+
 ALTER TABLE IF EXISTS public."Exercise_attempts"
     ADD CONSTRAINT to_exercise FOREIGN KEY (exercise_id)
     REFERENCES public."Exercises" (exercise_id) MATCH FULL

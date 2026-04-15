@@ -9,7 +9,7 @@ const pool = new Pool({
 	port: process.env.DB_PORT
 });
 
-exports.getListExerciseTestUser = function () {
+exports.getListExerciseTestUser = function (userId) {
 	return pool.query(`
     
 WITH "User_exercise" AS (
@@ -23,7 +23,7 @@ WITH "User_exercise" AS (
 		e."enabled"
     FROM public."Users" AS u
     CROSS JOIN public."Exercises" AS e
-	WHERE u."user_id" = 1
+	WHERE u."user_id" = $1
 ),
 
 "User_test" AS (
@@ -37,7 +37,7 @@ WITH "User_exercise" AS (
 		t."enabled"
     FROM public."Users" AS u
     CROSS JOIN public."View_test_questions_count" AS t
-	WHERE u."user_id" = 1
+	WHERE u."user_id" = $1
 )
 
 SELECT 
@@ -74,10 +74,10 @@ ON ut."user_id" = v."user_id"
 AND ut."test_id" = v."test_id"
 ORDER BY "is_exercise" DESC, "name" ASC 
     
-    `)
+    `, [userId])
 };
 
-exports.getExerciseDescriptionUser = function (param) {
+exports.getExerciseDescriptionUser = function (param, userId) {
 	return pool.query(`
 WITH "User_exercise" AS (
     SELECT 
@@ -90,7 +90,7 @@ WITH "User_exercise" AS (
 		e."enabled"
     FROM public."Users" AS u
     CROSS JOIN public."Exercises" AS e
-	WHERE u."user_id" = 1
+	WHERE u."user_id" = $2
 	AND e."exercise_id" = $1
 )
 
@@ -107,10 +107,10 @@ FROM "User_exercise" AS ue
 LEFT JOIN "View_exercise_best_attempts" AS v
 ON ue."user_id" = v."user_id"
 AND ue."exercise_id" = v."exercise_id"
-    `, [param.exercise_id])
+    `, [param.exercise_id, userId])
 };
 
-exports.getTestDescriptionUser = function (param) {
+exports.getTestDescriptionUser = function (param, userId) {
 	return pool.query(`
 		WITH "User_test" AS (
     SELECT 
@@ -123,7 +123,7 @@ exports.getTestDescriptionUser = function (param) {
 		t."enabled"
     FROM public."Users" AS u
     CROSS JOIN public."View_test_questions_count" AS t
-	WHERE u."user_id" = 1
+	WHERE u."user_id" = $2
 	AND t."test_id" = $1
 )
 
@@ -141,11 +141,11 @@ LEFT JOIN "View_test_best_attempts" AS v
 ON ut."user_id" = v."user_id"
 AND ut."test_id" = v."test_id"
     
-    `, [param.test_id])
+    `, [param.test_id, userId])
 };
 
 
-exports.getSuccessExerciseTestUser = function () {
+exports.getSuccessExerciseTestUser = function (userId) {
 	return pool.query(`
 	WITH "User_exercise" AS (
 		SELECT 
@@ -156,7 +156,7 @@ exports.getSuccessExerciseTestUser = function () {
 			e."enabled"
 		FROM public."Users" AS u
 		CROSS JOIN public."Exercises" AS e
-		WHERE u."user_id" = 1
+		WHERE u."user_id" = $1
 	),
 
 	"User_test" AS (
@@ -168,7 +168,7 @@ exports.getSuccessExerciseTestUser = function () {
 			t."enabled"
 		FROM public."Users" AS u
 		CROSS JOIN public."View_test_questions_count" AS t
-		WHERE u."user_id" = 1
+		WHERE u."user_id" = $1
 	)
 
 	SELECT 
@@ -199,7 +199,7 @@ exports.getSuccessExerciseTestUser = function () {
 	AND ut."test_id" = v."test_id"
 	ORDER BY "is_exercise" DESC, "name" ASC
 		
-`)
+    `, [userId])
 };
 
 
@@ -242,29 +242,28 @@ exports.getTests = function () {
 `)
 };
 
-exports.getBestTestAttempt = function (param) {
+exports.getBestTestAttempt = function (param, userId) {
 	return pool.query(`SELECT * FROM public."View_test_best_attempts" WHERE "user_id" = $1 AND "test_id" = $2`,
-		[param.user_id, param.test_id])
+		[userId, param.test_id])
 
 };
 
-exports.getBestExerciseAttempt = function (param) {
+exports.getBestExerciseAttempt = function (param, userId) {
 	return pool.query(`SELECT * FROM public."View_exercise_best_attempts" WHERE "user_id" = $1 AND "exercise_id" = $2`,
-		[param.user_id, param.test_id])
-
+		[userId, param.exercise_id])
 };
 
-exports.getStartedTestAttempt = function (param) {
+exports.getStartedTestAttempt = function (param, userId) {
 	return pool.query(`SELECT ta."test_attempts_id"
 		FROM public."Test_attempts" AS ta 
 		WHERE ta."end" IS null
 		AND ta."test_id" = $1
 		AND ta."user_id" = $2
 		ORDER BY test_attempts_id ASC `,
-		[param.test_id, param.user_id])
+		[param.test_id, userId])
 };
 
-exports.getLastTestAttempt = function (param) {
+exports.getLastTestAttempt = function (param, userId) {
 	return pool.query(`SELECT ta."test_attempts_id"
 		FROM public."Test_attempts" AS ta 
 		WHERE ta."end" IS NOT null
@@ -272,12 +271,12 @@ exports.getLastTestAttempt = function (param) {
 		AND ta."user_id" = $2
 		ORDER BY ta."end" DESC 
 		LIMIT 1`,
-		[param.test_id, param.user_id])
+		[param.test_id, userId])
 };
 
-exports.newTestAttempt = function (param) {
+exports.newTestAttempt = function (param, userId) {
 	return pool.query(`INSERT INTO public."Test_attempts" ("test_id", "user_id", "start") VALUES ($1, $2, NOW())`,
-		[param.test_id, param.user_id])
+		[param.test_id, userId])
 };
 
 exports.getTestQuestion = function (param) {
@@ -332,6 +331,27 @@ exports.endTestQuestion = function (param) {
 		[param.test_question_answer_id])
 };
 
+exports.checkAuthTestQuestion = function (param, userId) {
+	return pool.query(`
+		SELECT 1 
+		FROM public."Test_attempts" AS ta
+		JOIN public."Test_question_answers"  AS tqa ON ta."test_attempts_id" = tqa."test_attempt_id"
+		WHERE tqa."test_question_answer_id" = $1
+		AND ta."user_id" = $2;
+		`,
+		[param.test_question_answer_id, userId])
+};
+
+exports.checkAuthTeacher = function (userId) {
+	return pool.query(`
+		SELECT 1
+		FROM public."Users" AS u
+		WHERE u."user_role" = 'ucitel'
+		AND u."user_id" = $1
+		`,
+		[userId])
+};
+
 exports.setAnswerTestQuestion = function (option, answer) {
 	return pool.query(`INSERT INTO public."Test_question_option_answers" (test_question_option_id, test_question_answer_id) VALUES ($1, $2)`,
 		[option, answer])
@@ -377,3 +397,11 @@ exports.getFinalTestAttempt = function (param) {
 	)`, [param.test_attempt_id])
 };
 
+exports.getUsers = function (login) {
+	return pool.query(
+		`SELECT * 
+		FROM public."Users" AS u
+		WHERE u."login" = $1`,
+		[login]
+	);
+};

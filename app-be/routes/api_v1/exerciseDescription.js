@@ -1,18 +1,25 @@
-var express = require('express'); 
+var express = require('express');
 var { getExerciseDescriptionUser } = require('../../models/database')
 var router = express.Router();
 
 router.post('/', function (req, res, next) {
-    getExerciseDescriptionUser(req.body).then(
-        (result) => {
-            res.json(result.rows);
-        }
-    ).catch(
-        (err) => {
-            console.log(err);
-            res.status(500);
-        }
-    );
+    if (req.session && req.session.userId) {
+        getExerciseDescriptionUser(req.body, req.session.userId).then(
+            (result) => {
+                res.json(result.rows);
+            }
+        ).catch(
+            (err) => {
+                console.log(err);
+                res.status(500);
+            }
+        );
+    }
+    // not authenticated
+    else {
+        res.status(401).end();
+    }
+
 });
 
 module.exports = router; 

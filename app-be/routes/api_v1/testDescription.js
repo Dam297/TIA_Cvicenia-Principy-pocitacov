@@ -3,16 +3,22 @@ var { getTestDescriptionUser } = require('../../models/database')
 var router = express.Router();
 
 router.post('/', function (req, res, next) {
-    getTestDescriptionUser(req.body).then(
-        (result) => {
-            res.json(result.rows);
+     if (req.session && req.session.userId) {
+            getTestDescriptionUser(req.body, req.session.userId).then(
+                (result) => {
+                    res.json(result.rows);
+                }
+            ).catch(
+                (err) => {
+                    console.log(err);
+                    res.status(500);
+                }
+            );
         }
-    ).catch(
-        (err) => {
-            console.log(err);
-            res.status(500);
+        // not authenticated
+        else {
+            res.status(401).end();
         }
-    );
 });
 
 module.exports = router; 
