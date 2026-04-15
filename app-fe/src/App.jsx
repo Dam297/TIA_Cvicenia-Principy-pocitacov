@@ -11,51 +11,51 @@ import { useState } from "react";
 
 
 function App() {
-  const [par, setPar] = useState([]);  
-
-
+  const [par, setPar] = useState([]);
+  const [authStatus, setAuthStatus] = useState(false);
+  
   return (
     <div className="container">
       <BrowserRouter>
         <Routes>
           <Route
             path="/"
-            element={<SuccessStudentPage />}
+            element={<SuccessStudentPage authStatus={authStatus} />}
           >
           </Route>
           <Route
             path="/list"
-            element={<ExerciseTestPage setPar={setPar} />}
+            element={<ExerciseTestPage authStatus={authStatus} setPar={setPar} />}
           >
           </Route>
           <Route
             path="/description"
-            element={<DescriptionPage par={par} setPar={setPar}/>}
+            element={<DescriptionPage authStatus={authStatus}  par={par} setPar={setPar}/>}
           >
           </Route>
           <Route
             path="/end"
-            element={<FinalExerciseTestPage par={par} setPar={setPar}/>}
+            element={<FinalExerciseTestPage authStatus={authStatus}  par={par} setPar={setPar}/>}
           >
           </Route>
           <Route
             path="/students"
-            element={<SuccessStudentsPage />}
+            element={<SuccessStudentsPage authStatus={authStatus}  />}
           >
           </Route>
           <Route
             path="/test_question"
-            element={<TestQuestionPage par={par} setPar={setPar}/>}
+            element={<TestQuestionPage authStatus={authStatus}  par={par} setPar={setPar}/>}
           >
           </Route>
           <Route
             path="/login"
-            element={<LoginPage />}
+            element={<LoginPage authStatus={authStatus}  setAuthStatus={setAuthStatus} />}
           >
           </Route>
           <Route
             path="/exercise"
-            element={<ExercisePage />}
+            element={<ExercisePage authStatus={authStatus}  />}
           >
           </Route>
         </Routes>

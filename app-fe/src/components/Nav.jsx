@@ -1,6 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from '../services/authService';
 
 function Nav() {
+    const navigate = useNavigate();
+
+    function logoutClick() {
+        logout()
+            .then(() => {
+                /* props.setAuthStatus(false); */
+                navigate('/login');
+            })
+            .catch((error) => {
+                console.log(error.message);
+               /* props.setError(error.message) */
+            });
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light p-2">
             <div className="container-fluid">
@@ -34,7 +49,7 @@ function Nav() {
                         </li>
 
                         <li className="nav-item">
-                            <Link className="nav-link" to="/login">
+                            <Link className="nav-link" onClick={logoutClick}>
                                 Odhlásiť sa
                             </Link>
                         </li>

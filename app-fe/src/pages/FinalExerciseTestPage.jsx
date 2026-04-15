@@ -3,27 +3,36 @@ import HeaderSmall from "../components/HeaderSmall";
 import Button from "../components/Button";
 import { useState } from 'react'
 import { useEffect, useRef} from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getFinalTestAttempt } from "../services/databaseService";
 import { secondsToNormal } from "../utils/TimeFormate"
 import { NEEDSUCCESSTEST } from "../Const";
 
 
-function FinalExerciseTestPage({par, setPar}) {
+function FinalExerciseTestPage(props) {
     const [data, setData] = useState(0);
     const fetched = useRef(false);
 
+    const navigate = useNavigate();
+
+    // navigate to login page if not authenticated (based on React authState, not DB state) 
+    useEffect(() => {
+        if (!props.authStatus) {
+            navigate('/login')
+        }
+    },[props.authStatus]);
+
+
     let id = -1;
-    if(par["TestID"] != null ){
-        id = par["TestID"];
-    } else if(par["ExerciseID"] != null){
-        id = par["ExerciseID"];
+    if(props.par["TestID"] != null ){
+        id = props.par["TestID"];
+    } else if(props.par["ExerciseID"] != null){
+        id = props.par["ExerciseID"];
     }
 
      function getData() {
-        getFinalTestAttempt({ "test_id": id, "user_id": 1 }).then(
+        getFinalTestAttempt({ "test_id": id}).then(
             (list) => {
-                console.log(list);
                 setData(list[0]);
             }
         )
@@ -54,7 +63,7 @@ function FinalExerciseTestPage({par, setPar}) {
 
                 <div className="row m-2 justify-content-center">
                     <div className="col-auto p-0">
-                        <Button text={"Ukončiť"} where="/" onClickButton={() => {setPar({})}} />
+                        <Button text={"Ukončiť"} where="/" onClickButton={() => {props.setPar({})}} />
                     </div>
                 </div>
             </div>

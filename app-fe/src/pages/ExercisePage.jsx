@@ -2,15 +2,27 @@ import Nav from "../components/Nav";
 import Timer from "../components/Timer";
 import { useState } from 'react';
 import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 
 
 
-function ExercisePage() {
+function ExercisePage(props) {
     const [number, setNumber] = useState(2);
     const [numberQuestion, setNumberQuestion] = useState(1);
-    const [navigateTo, setNavigateTo] = useState("");    
+    const [navigateTo, setNavigateTo] = useState("");
     const [i, setI] = useState(3);
+
+    const navigate = useNavigate();
+
+    // navigate to login page if not authenticated (based on React authState, not DB state) 
+    useEffect(() => {
+        if (!props.authStatus) {
+            navigate('/login')
+        }
+    },
+    [props.authStatus]);
 
 
 
@@ -22,7 +34,7 @@ function ExercisePage() {
         if (numberQuestion >= countQuestion) {
             setNavigateTo("/");
         }
-        setNumber(Math.floor(Math.random() * (2**i - 0 + 1)));
+        setNumber(Math.floor(Math.random() * (2 ** i - 0 + 1)));
         setNumberQuestion(numberQuestion + 1);
         setI(i + 1);
     }

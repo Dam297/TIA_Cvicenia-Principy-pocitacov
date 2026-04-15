@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 import { endTestQuestion } from "../services/databaseService";
 import { endTest } from "../services/databaseService";
 import { getTestAttempt } from "../services/databaseService";
+import { useNavigate } from "react-router-dom";
 
 function secondsRemaining(date, sec) {
     const now = Date.now();
@@ -16,7 +17,7 @@ function secondsRemaining(date, sec) {
 }
 
 
-function TestQuestionPage({par, setPar}) {
+function TestQuestionPage(props) {
     const [numberQuestion, setNumberQuestion] = useState(0);
     const [countQuestion, setCountQuestion] = useState(0);
     const [question, setQuestion] = useState("");
@@ -27,9 +28,20 @@ function TestQuestionPage({par, setPar}) {
     const [time, setTime] = useState(10);
     const fetched = useRef(false);
 
+    const navigate = useNavigate();
+
+    // navigate to login page if not authenticated (based on React authState, not DB state) 
+    useEffect(() => {
+        if (!props.authStatus) {
+            navigate('/login')
+        }
+    }, [props.authStatus]);
+
+
+
     let id = -1;
-    if(par["TestID"] != null){
-        id = par["TestID"];
+    if (props.par["TestID"] != null) {
+        id = props.par["TestID"];
     }
 
     function setSet(prevSet, item) {
@@ -47,7 +59,7 @@ function TestQuestionPage({par, setPar}) {
 
 
     function getDataQuestion() {
-        getTestQuestion({ "test_id": id, "user_id": 1 }).then(
+        getTestQuestion({ "test_id": id}).then(
             (list) => {
                 setTestQuestionAnswerId(Number(list[0]["test_question_answer_id"]));
                 setNumberQuestion(Number(list[0]["count_actual"]));
@@ -63,7 +75,7 @@ function TestQuestionPage({par, setPar}) {
     }
 
     function getTime() {
-        getTestAttempt({ "test_id": id, "user_id": 1 }).then(
+        getTestAttempt({ "test_id": id}).then(
             (list) => {
                 setTime(secondsRemaining(list[0]["start"], list[0]["max_time_s"]));
             }
@@ -86,13 +98,13 @@ function TestQuestionPage({par, setPar}) {
         }
     }
 
-    function afterSubmit() {
-        endTestQuestion({ "test_question_answer_id": testQuestionAnswerId, "answered_options": [...selectedOptions] }).then(
+    async function afterSubmit() {
+        await endTestQuestion({ "test_question_answer_id": testQuestionAnswerId, "answered_options": [...selectedOptions] }).then(
             setSelectedOptions(new Set())
         );
         setFalse();
         if ((numberQuestion + 1) > countQuestion) {
-            endTest({ "test_id": id, "user_id": 1 });
+            endTest({ "test_id": id });
             setNavigateTo("../end")
         } else {
             getDataQuestion();

@@ -5,11 +5,22 @@ import { getSuccessExerciseTestUser } from "../services/databaseService";
 import { NEEDSUCCESS } from "../Const";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { secondsToNormal } from "../utils/TimeFormate"
 
 
-function SuccessStudentPage() {
+function SuccessStudentPage(props) {
     const [rowsObj, setRowsObj] = useState([]);
+    const navigate = useNavigate();
+
+    // navigate to login page if not authenticated (based on React authState, not DB state) 
+    useEffect(() => {
+        if (!props.authStatus) {
+            navigate('/login')
+        }
+    },[props.authStatus]);
+
+
     function processData(list) {
         const output = list.map(item => {
             const result = {};
@@ -37,6 +48,8 @@ function SuccessStudentPage() {
         }, 2000);
         return () => clearInterval(fetchMessagesInterval);
     }, []);
+
+    
 
     let headerRow = {
         "name": "Názov",

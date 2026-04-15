@@ -7,13 +7,22 @@ import { getExercises } from "../services/databaseService";
 import { getTests } from "../services/databaseService";
 import { getStudents } from "../services/databaseService";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { NEEDSUCCESS } from "../Const";
 
 
-function SuccessStudentsPage() {
+function SuccessStudentsPage(props) {
     const [headerRow, setHeaderRow] = useState([])
     const [rowsArr, setRowsArr] = useState([])
+    const navigate = useNavigate();
+
+    // navigate to login page if not authenticated (based on React authState, not DB state) 
+    useEffect(() => {
+        if (!props.authStatus) {
+            navigate('/login')
+        }
+    }, [props.authStatus]);
 
 
     async function loadExerciseForStudent(student_id, exercise_id, count_of_questions) {
@@ -75,7 +84,7 @@ function SuccessStudentsPage() {
                 }
                 i++;
             }
-            
+
             for (const test of tests) {
                 newRow[i] = await loadTestForStudent(student_id, test["test_id"], test["count_of_questions"]);
                 if (newRow[i][1] === false) {
@@ -83,10 +92,10 @@ function SuccessStudentsPage() {
                 }
                 i++;
             }
-            
+
             newRow[0] = [student_name, success];
             newRow[1] = [student_login, success];
-            newRow[i] = [(success) ? "OK": "Fx" , success];
+            newRow[i] = [(success) ? "OK" : "Fx", success];
             rowsArr[j++] = newRow;
         }
 

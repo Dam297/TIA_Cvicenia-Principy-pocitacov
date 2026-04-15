@@ -1,6 +1,6 @@
 
 function getListExerciseTestUser() {
-    return fetch("/api/v1/list").then(
+    return fetch("/api/v1/list", {credentials: "include"} ).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
                 throw new Error("Error getting list");
@@ -13,7 +13,7 @@ function getListExerciseTestUser() {
 }
 
 function getSuccessExerciseTestUser() {
-    return fetch("/api/v1/success").then(
+    return fetch("/api/v1/success",  {credentials: "include"}).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
                 throw new Error("Error getting list");
@@ -31,7 +31,8 @@ function getBestTestAttempt(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param),  
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -45,7 +46,7 @@ function getBestTestAttempt(param) {
 }
 
 function getExercises() {
-    return fetch("/api/v1/exercises").then(
+    return fetch("/api/v1/exercises",  {credentials: "include"}).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
                 throw new Error("Error getting list");
@@ -58,7 +59,7 @@ function getExercises() {
 }
 
 function getTests() {
-    return fetch("/api/v1/tests").then(
+    return fetch("/api/v1/tests", {credentials: "include"}).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
                 throw new Error("Error getting list");
@@ -71,7 +72,7 @@ function getTests() {
 }
 
 function getStudents() {
-    return fetch("/api/v1/students").then(
+    return fetch("/api/v1/students", {credentials: "include"}).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
                 throw new Error("Error getting list");
@@ -90,7 +91,8 @@ function getBestExerciseAttempt(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param), 
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -109,7 +111,8 @@ function getExerciseDescription(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param),
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -128,7 +131,8 @@ function getTestDescription(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param),
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -141,13 +145,14 @@ function getTestDescription(param) {
         });
 }
 
-function insertNewTestAttempt(param) {
+async function insertNewTestAttempt(param) {
     return fetch("/api/v1/insert_new_test_attempt", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param), 
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -166,7 +171,8 @@ function getTestQuestion(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param),
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -185,7 +191,8 @@ function getTestOptions(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param),
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -205,7 +212,8 @@ function getTestAttempt(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param),
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -223,7 +231,8 @@ async function endTestQuestion(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param),
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -242,7 +251,8 @@ function endTest(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param),
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
@@ -261,7 +271,8 @@ function getFinalTestAttempt(param) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(param)
+        body: JSON.stringify(param),
+        credentials: "include"
     }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299

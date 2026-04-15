@@ -5,21 +5,37 @@ import { getTestDescription } from "../services/databaseService";
 import { insertNewTestAttempt } from "../services/databaseService";
 import { secondsToNormal } from "../utils/TimeFormate"
 import { NEEDSUCCESS } from "../Const";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 
 
-
-function DescriptionPage({par, setPar}) {
+function DescriptionPage(props) {
+    const navigate = useNavigate();
     const [descr, setDescr] = useState([]);
     let id = -1;
     let isExercise = false;
 
-    if(par["DescriptionPage"] != null){
-        id = par["DescriptionPage"].id;
-        isExercise = par["DescriptionPage"].is_exercise;
+    // navigate to login page if not authenticated (based on React authState, not DB state) 
+    useEffect(() => {
+        if (! props.authStatus) {
+            navigate('/login');
+        }
+    }, 
+    [props.authStatus]);
+
+    if(props.par["DescriptionPage"] != null){
+        id = props.par["DescriptionPage"].id;
+        isExercise = props.par["DescriptionPage"].is_exercise;
     }
     
+    async function startTest() {
+        props.setPar({"TestID": id});
+        await insertNewTestAttempt({ "test_id": id });
+        navigate('/test_question');
+    }
+
+
     // periodically refresh (timer)
     useEffect(() => {
         if (isExercise) {
@@ -57,8 +73,8 @@ function DescriptionPage({par, setPar}) {
                 maximalTime={(descr.max_time_s === null) ? "" : secondsToNormal(descr.max_time_s, true)}
                 bestSuccess={(descr.points === null) ? "" : descr.points + "/" + descr.count_of_questions}
                 bestSuccessTime={(descr.sec === null) ? "" : secondsToNormal(descr.sec, true)}
-                buttonLink={(isExercise === true) ? "../exercise" : "../test_question"}
-                onClickButton={(isExercise) ? () => {setPar({"ExerciseID": id})} : () => {setPar({"TestID": id}); insertNewTestAttempt({ "user_id": 1, "test_id": id }) }}
+                buttonLink={(isExercise === true) ? "../exercise" : ""}
+                onClickButton={(isExercise) ? () => {props.setPar({"ExerciseID": id})} : () =>{startTest()} }
             />
         </div>
     </>;
