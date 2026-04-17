@@ -1,8 +1,8 @@
 import Nav from "../components/Nav";
 import Header from "../components/Header"
 import Table from "../components/Table";
-import { getBestTestAttempt } from "../services/databaseService";
-import { getBestExerciseAttempt } from "../services/databaseService";
+import { getTestAttemptBest } from "../services/databaseService";
+import { getExerciseAttemptBest } from "../services/databaseService";
 import { getExercises } from "../services/databaseService";
 import { getTests } from "../services/databaseService";
 import { getStudents } from "../services/databaseService";
@@ -26,7 +26,7 @@ function SuccessStudentsPage(props) {
 
 
     async function loadExerciseForStudent(student_id, exercise_id, count_of_questions) {
-        const attempt = await getBestExerciseAttempt({
+        const attempt = await getExerciseAttemptBest({
             "user_id": student_id,
             "exercise_id": exercise_id,
 
@@ -40,7 +40,7 @@ function SuccessStudentsPage(props) {
     }
 
     async function loadTestForStudent(student_id, test_id, count_of_questions) {
-        const attempt = await getBestTestAttempt({
+        const attempt = await getTestAttemptBest({
             "user_id": student_id,
             "test_id": test_id,
 

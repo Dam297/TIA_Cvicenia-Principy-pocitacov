@@ -1,7 +1,7 @@
 import Nav from "../components/Nav";
 import DescriptionTestExercise from "../components/DescriptionTestExercise";
-import { getExerciseDescription } from "../services/databaseService";
-import { getTestDescription } from "../services/databaseService";
+import { getExerciseAttemptBestDescription } from "../services/databaseService";
+import { getTestAttemptBestDescription } from "../services/databaseService";
 import { insertNewTestAttempt } from "../services/databaseService";
 import { secondsToNormal } from "../utils/TimeFormate"
 import { NEEDSUCCESS } from "../Const";
@@ -39,11 +39,11 @@ function DescriptionPage(props) {
     // periodically refresh (timer)
     useEffect(() => {
         if (isExercise) {
-            getExerciseDescription({ "exercise_id": id }).then(
+            getExerciseAttemptBestDescription({ "exercise_id": id }).then(
                 (list) => setDescr(list[0])
             );
         } else {
-            getTestDescription({ "test_id": id }).then(
+            getTestAttemptBestDescription({ "test_id": id }).then(
                 (list) => setDescr(list[0])
             );
         }
@@ -51,11 +51,11 @@ function DescriptionPage(props) {
 
         const fetchMessagesInterval = setInterval(() => {
             if (isExercise) {
-                getExerciseDescription({ "exercise_id": id }).then(
+                getExerciseAttemptBestDescription({ "exercise_id": id }).then(
                     (list) => setDescr(list[0])
                 );
             } else {
-                getTestDescription({ "test_id": id }).then(
+                getTestAttemptBestDescription({ "test_id": id }).then(
                     (list) => setDescr(list[0])
                 );
             }

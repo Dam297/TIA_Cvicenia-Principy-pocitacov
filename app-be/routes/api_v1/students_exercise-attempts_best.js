@@ -1,11 +1,11 @@
 var express = require('express');
-var { getTests } = require('../../models/database');
-var { getTestOptions } = require('../../models/database');
+var { getBestExerciseAttempt } = require('../../models/database');
+var { getExerciseDescriptionUser } = require('../../models/database');
 var router = express.Router();
 
-router.get('/', function (req, res, next) {
+router.post('/', function (req, res, next) {
     if (req.session && req.session.userId) {
-        getTests().then(
+        getBestExerciseAttempt(req.body, req.session.userId).then(
             (result) => {
                 res.json(result.rows);
             }
@@ -22,9 +22,9 @@ router.get('/', function (req, res, next) {
     }
 });
 
-router.get('/questions/options/:id', function (req, res, next) {
+router.post('/description', function (req, res, next) {
     if (req.session && req.session.userId) {
-        getTestOptions(req.params.id).then(
+        getExerciseDescriptionUser(req.body, req.session.userId).then(
             (result) => {
                 res.json(result.rows);
             }
@@ -39,6 +39,8 @@ router.get('/questions/options/:id', function (req, res, next) {
     else {
         res.status(401).end();
     }
+
 });
+
 
 module.exports = router; 

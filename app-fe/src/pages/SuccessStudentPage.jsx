@@ -1,7 +1,7 @@
 import Nav from "../components/Nav";
 import Header from "../components/Header"
 import Table from "../components/Table";
-import { getSuccessExerciseTestUser } from "../services/databaseService";
+import { getSuccessRateSpecificStudent } from "../services/databaseService";
 import { NEEDSUCCESS } from "../Const";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -37,12 +37,12 @@ function SuccessStudentPage(props) {
 
     // periodically refresh (timer)
     useEffect(() => {
-        getSuccessExerciseTestUser().then(
+        getSuccessRateSpecificStudent().then(
             (list) => setRowsObj(processData(list))
         );
 
         const fetchMessagesInterval = setInterval(() => {
-            getSuccessExerciseTestUser().then(
+            getSuccessRateSpecificStudent().then(
                 (list) => setRowsObj(processData(list))
             );
         }, 2000);

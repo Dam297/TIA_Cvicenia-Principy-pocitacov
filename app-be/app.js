@@ -6,25 +6,15 @@ const PgSession = require("connect-pg-simple")(session);
 const { config } = require('./config/config.js');
 var pool = require('./config/db.js');
 
-
-
-var listRouter = require('./routes/api_v1/list')
-var successRouter = require('./routes/api_v1/success')
-var studentsRouter = require('./routes/api_v1/students')
-var exercisesRouter = require('./routes/api_v1/exercises')
-var testsRouter = require('./routes/api_v1/tests')
-var bestTestAttemptRouter = require('./routes/api_v1/bestTestAttempt')
-var bestExerciseAttemptRouter = require('./routes/api_v1/bestExerciseAttempt')
-var testDescriptionRouter = require('./routes/api_v1/testDescription')
-var exerciseDescriptionRouter = require('./routes/api_v1/exerciseDescription')
-var insertNewTestAttemptRouter = require('./routes/api_v1/insertNewTestAttempt')
-var getTestQuestionRouter = require('./routes/api_v1/getTestQuestion')
-var getTestOptionsRouter = require('./routes/api_v1/getTestOptions')
-var getTestAttemptRouter = require('./routes/api_v1/getTestAttempt')
-var getFinalTestAttemptRouter = require('./routes/api_v1/getFinalTestAttempt')
-var endTestQuestionRouter = require('./routes/api_v1/endTestQuestion')
-var endTestRouter = require('./routes/api_v1/endTest')
-var authRouter = require('./routes/api_v1/auth')
+var authRouter = require('./routes/api_v1/auth');
+var exercisesRouter = require('./routes/api_v1/exercises');
+var testsRouter = require('./routes/api_v1/tests');
+var studentsRouter = require('./routes/api_v1/students');
+var studentsExerciseAttemptsBestRouter = require('./routes/api_v1/students_exercise-attempts_best.js')
+var studentsTestAttemptsRouter = require('./routes/api_v1/students_test-attempts.js');
+var studentsTestAttemptsLastRouter = require('./routes/api_v1/students_test-attempts_last.js');
+var studentsTestAttemptsBestRouter = require('./routes/api_v1/students_test-attempts_best.js');
+var studentsTestAttemptsQuestionsRouter = require('./routes/api_v1/students_test-attempts_questions.js');
 
 
 require('dotenv').config()
@@ -70,27 +60,14 @@ app.use(
 );    
     
         
-
-app.use('/api/v1/list', listRouter);
-app.use('/api/v1/success', successRouter);
-app.use('/api/v1/students', studentsRouter);
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/exercises', exercisesRouter);
 app.use('/api/v1/tests', testsRouter);
-app.use('/api/v1/best_test_attempt', bestTestAttemptRouter);
-app.use('/api/v1/best_exercise_attempt', bestExerciseAttemptRouter);
-app.use('/api/v1/test_description', testDescriptionRouter);
-app.use('/api/v1/exercise_description', exerciseDescriptionRouter);
-app.use('/api/v1/insert_new_test_attempt', insertNewTestAttemptRouter);
-app.use('/api/v1/get_test_question', getTestQuestionRouter);
-app.use('/api/v1/get_test_options', getTestOptionsRouter);
-app.use('/api/v1/get_test_attempt', getTestAttemptRouter);
-app.use('/api/v1/end_test_question', endTestQuestionRouter);
-app.use('/api/v1/end_test', endTestRouter);
-app.use('/api/v1/get_final_test_attempt', getFinalTestAttemptRouter);
-app.use('/api/v1/auth', authRouter);
-
-
-
-
+app.use('/api/v1/students', studentsRouter);
+app.use('/api/v1/students/exercise-attempts/best', studentsExerciseAttemptsBestRouter);
+app.use('/api/v1/students/test-attempts', studentsTestAttemptsRouter);
+app.use('/api/v1/students/test-attempts/last', studentsTestAttemptsLastRouter);
+app.use('/api/v1/students/test-attempts/best', studentsTestAttemptsBestRouter);
+app.use('/api/v1/students/test-attempts/questions', studentsTestAttemptsQuestionsRouter);
 
 module.exports = app;

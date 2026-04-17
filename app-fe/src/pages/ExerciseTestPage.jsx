@@ -1,7 +1,7 @@
 import Nav from "../components/Nav";
 import Header from "../components/Header"
 import DescriptionTestExercise from "../components/DescriptionTestExercise";
-import { getListExerciseTestUser } from "../services/databaseService";
+import { getSuccessRateList } from "../services/databaseService";
 import { NEEDSUCCESS } from "../Const";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -21,12 +21,12 @@ function ExerciseTestPage(props) {
 
     // periodically refresh (timer)
     useEffect(() => {
-        getListExerciseTestUser().then(
+        getSuccessRateList().then(
             (list) => setList(list)
         );
 
         const fetchMessagesInterval = setInterval(() => {
-            getListExerciseTestUser().then(
+            getSuccessRateList().then(
                 (list) => setList(list)
             );
         }, 2000);

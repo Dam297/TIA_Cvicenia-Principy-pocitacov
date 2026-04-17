@@ -311,12 +311,12 @@ CROSS JOIN (
 };
 
 
-exports.getTestOptions = function (param) {
+exports.getTestOptions = function (questionId) {
 	return pool.query(`SELECT tqa."test_question_option_id", tqa."option"
 FROM public."Test_question_options" AS tqa
 WHERE tqa."test_question_id" = $1
 ORDER BY Random()`,
-		[param.test_question_id]
+		[questionId]
 	)
 };
 

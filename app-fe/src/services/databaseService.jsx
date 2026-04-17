@@ -1,52 +1,5 @@
-
-function getListExerciseTestUser() {
-    return fetch("/api/v1/list", {credentials: "include"} ).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-
-function getSuccessExerciseTestUser() {
-    return fetch("/api/v1/success",  {credentials: "include"}).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-
-function getBestTestAttempt(param) {
-    return fetch("/api/v1/best_test_attempt", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(param),  
-        credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-
 function getExercises() {
-    return fetch("/api/v1/exercises",  {credentials: "include"}).then(
+    return fetch("/api/v1/exercises", { credentials: "include" }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
                 throw new Error("Error getting list");
@@ -59,7 +12,20 @@ function getExercises() {
 }
 
 function getTests() {
-    return fetch("/api/v1/tests", {credentials: "include"}).then(
+    return fetch("/api/v1/tests", { credentials: "include" }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list");
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+function getTestOptions(id) {
+    return fetch(`/api/v1/tests/questions/options/${id}`, { credentials: "include" }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
                 throw new Error("Error getting list");
@@ -72,7 +38,86 @@ function getTests() {
 }
 
 function getStudents() {
-    return fetch("/api/v1/students", {credentials: "include"}).then(
+    return fetch("/api/v1/students", { credentials: "include" }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list");
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+function getSuccessRateList() {
+    return fetch("/api/v1/students/success-rates", { credentials: "include" }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list");
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+function getSuccessRateSpecificStudent() {
+    return fetch("/api/v1/students/success-rates/specific-student", { credentials: "include" }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list");
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+function getExerciseAttemptBest(param) {
+    return fetch("/api/v1/students/exercise-attempts/best", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list" + response);
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+function getExerciseAttemptBestDescription(param) {
+    return fetch("/api/v1/students/exercise-attempts/best/description", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list" + response);
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+function getTestAttempt(id) {
+    return fetch(`/api/v1/students/test-attempts/${id}`, { credentials: "include" }).then(
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
                 throw new Error("Error getting list");
@@ -85,148 +130,8 @@ function getStudents() {
 }
 
 
-function getBestExerciseAttempt(param) {
-    return fetch("/api/v1/best_exercise_attempt", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(param), 
-        credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-
-function getExerciseDescription(param) {
-    return fetch("/api/v1/exercise_description", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(param),
-        credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-
-function getTestDescription(param) {
-    return fetch("/api/v1/test_description", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(param),
-        credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-
 async function insertNewTestAttempt(param) {
-    return fetch("/api/v1/insert_new_test_attempt", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(param), 
-        credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-
-function getTestQuestion(param) {
-    return fetch("/api/v1/get_test_question", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(param),
-        credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-
-function getTestOptions(param) {
-    return fetch("/api/v1/get_test_options", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(param),
-        credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-
-
-function getTestAttempt(param) {
-    return fetch("/api/v1/get_test_attempt", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(param),
-        credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
-            }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
-}
-async function endTestQuestion(param) {
-    return fetch("/api/v1/end_test_question", {
+    return fetch("/api/v1/students/test-attempts", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -246,7 +151,27 @@ async function endTestQuestion(param) {
 }
 
 function endTest(param) {
-    return fetch("/api/v1/end_test", {
+    return fetch("/api/v1/students/test-attempts", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list" + response);
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+function getTestAttemptLast(param) {
+    return fetch("/api/v1/students/test-attempts/last", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -265,8 +190,8 @@ function endTest(param) {
         });
 }
 
-function getFinalTestAttempt(param) {
-    return fetch("/api/v1/get_final_test_attempt", {
+function getTestAttemptBest(param) {
+    return fetch("/api/v1/students/test-attempts/best", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -285,5 +210,57 @@ function getFinalTestAttempt(param) {
         });
 }
 
-export { getListExerciseTestUser, getSuccessExerciseTestUser, getBestTestAttempt, getBestExerciseAttempt, getExercises, getTests, getStudents, getExerciseDescription, getTestDescription, insertNewTestAttempt, getTestQuestion, getTestOptions, getTestAttempt, endTestQuestion, endTest, getFinalTestAttempt }
+function getTestAttemptBestDescription(param) {
+    return fetch("/api/v1/students/test-attempts/best/description", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list" + response);
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
 
+function getTestAttemptQuestion(id) {
+    return fetch(`/api/v1/students/test-attempts/questions/${id}`, { credentials: "include" }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list");
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+async function endTestAttemptQuestion(param) {
+    return fetch("/api/v1/students/test-attempts/questions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then(
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting list" + response);
+            }
+            return response.json();
+        }).catch((error) => {
+            console.log("Error getting list");
+            return [];
+        });
+}
+
+export { getSuccessRateList, getSuccessRateSpecificStudent, getTestAttemptBest, getExerciseAttemptBest, getExercises, getTests, getStudents, getExerciseAttemptBestDescription, getTestAttemptBestDescription, insertNewTestAttempt, getTestAttemptQuestion, getTestOptions, getTestAttempt, endTestAttemptQuestion, endTest, getTestAttemptLast }

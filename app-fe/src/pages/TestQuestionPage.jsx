@@ -2,10 +2,10 @@ import Nav from "../components/Nav";
 import Timer from "../components/Timer";
 import { useState } from 'react'
 import { Navigate } from "react-router-dom";
-import { getTestQuestion } from "../services/databaseService";
+import { getTestAttemptQuestion } from "../services/databaseService";
 import { getTestOptions } from "../services/databaseService";
 import { useEffect, useRef } from "react";
-import { endTestQuestion } from "../services/databaseService";
+import { endTestAttemptQuestion } from "../services/databaseService";
 import { endTest } from "../services/databaseService";
 import { getTestAttempt } from "../services/databaseService";
 import { useNavigate } from "react-router-dom";
@@ -59,13 +59,13 @@ function TestQuestionPage(props) {
 
 
     function getDataQuestion() {
-        getTestQuestion({ "test_id": id}).then(
+        getTestAttemptQuestion(id).then(
             (list) => {
                 setTestQuestionAnswerId(Number(list[0]["test_question_answer_id"]));
                 setNumberQuestion(Number(list[0]["count_actual"]));
                 setCountQuestion(Number(list[0]["count_maximum"]));
                 setQuestion(list[0]["question"]);
-                getTestOptions({ "test_question_id": list[0]["test_question_id"] }).then(
+                getTestOptions(list[0]["test_question_id"]).then(
                     (list2) => {
                         setOptions(list2);
                     }
@@ -75,7 +75,7 @@ function TestQuestionPage(props) {
     }
 
     function getTime() {
-        getTestAttempt({ "test_id": id}).then(
+        getTestAttempt(id).then(
             (list) => {
                 setTime(secondsRemaining(list[0]["start"], list[0]["max_time_s"]));
             }
@@ -99,7 +99,7 @@ function TestQuestionPage(props) {
     }
 
     async function afterSubmit() {
-        await endTestQuestion({ "test_question_answer_id": testQuestionAnswerId, "answered_options": [...selectedOptions] }).then(
+        await endTestAttemptQuestion({ "test_question_answer_id": testQuestionAnswerId, "answered_options": [...selectedOptions] }).then(
             setSelectedOptions(new Set())
         );
         setFalse();

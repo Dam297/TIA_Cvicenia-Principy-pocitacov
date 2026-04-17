@@ -1,7 +1,6 @@
 var express = require('express');
-var { getLastTestAttempt } = require('../../models/database')
-var { getFinalTestAttempt } = require('../../models/database')
-
+var { getLastTestAttempt } = require('../../models/database');
+var { getFinalTestAttempt } = require('../../models/database');
 var router = express.Router();
 
 router.post('/', async function (req, res, next) {

@@ -4,7 +4,7 @@ import Button from "../components/Button";
 import { useState } from 'react'
 import { useEffect, useRef} from "react";
 import { useNavigate } from "react-router-dom";
-import { getFinalTestAttempt } from "../services/databaseService";
+import { getTestAttemptLast } from "../services/databaseService";
 import { secondsToNormal } from "../utils/TimeFormate"
 import { NEEDSUCCESSTEST } from "../Const";
 
@@ -31,7 +31,7 @@ function FinalExerciseTestPage(props) {
     }
 
      function getData() {
-        getFinalTestAttempt({ "test_id": id}).then(
+        getTestAttemptLast({ "test_id": id}).then(
             (list) => {
                 setData(list[0]);
             }

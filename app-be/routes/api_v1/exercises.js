@@ -1,5 +1,5 @@
 var express = require('express');
-var { getExercises } = require('../../models/database')
+var { getExercises } = require('../../models/database');
 var router = express.Router();
 
 router.get('/', function (req, res, next) {
