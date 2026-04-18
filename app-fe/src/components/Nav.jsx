@@ -1,18 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from '../services/authService';
 
-function Nav() {
+function Nav(props) {
     const navigate = useNavigate();
 
     function logoutClick() {
         logout()
             .then(() => {
-                /* props.setAuthStatus(false); */
+                props.setAuthStatus(false);
                 navigate('/login');
             })
             .catch((error) => {
                 console.log(error.message);
-               /* props.setError(error.message) */
+                props.setError(error.message) 
             });
     }
 

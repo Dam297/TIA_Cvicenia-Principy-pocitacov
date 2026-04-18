@@ -1,79 +1,110 @@
 function getExercises() {
-    return fetch("/api/v1/exercises", { credentials: "include" }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
+    return fetch("/api/v1/exercises", { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting exercises" };
+        }
+        return response.json();
+    })
 }
 
+
 function getTests() {
-    return fetch("/api/v1/tests", { credentials: "include" }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
+    return fetch("/api/v1/tests", { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting tests" };
+        }
+        return response.json();
+    });
 }
 
 function getTestOptions(id) {
-    return fetch(`/api/v1/tests/questions/options/${id}`, { credentials: "include" }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
+    return fetch(`/api/v1/tests/questions/options/${id}`, { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting description of test" };
+        }
+        return response.json();
+    })
 }
 
 function getStudents() {
-    return fetch("/api/v1/students", { credentials: "include" }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
+    return fetch("/api/v1/students", { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting students" };
+        }
+        return response.json();
+    });
 }
 
 function getSuccessRateList() {
-    return fetch("/api/v1/students/success-rates", { credentials: "include" }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
+    return fetch("/api/v1/students/success-rates", { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting sucess rate" };
+        }
+        return response.json();
+    });
 }
 
 function getSuccessRateSpecificStudent() {
-    return fetch("/api/v1/students/success-rates/specific-student", { credentials: "include" }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
+    return fetch("/api/v1/students/success-rates/specific-student", { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting sucess-rate for student" };
+        }
+        return response.json();
+    });
 }
 
 function getExerciseAttemptBest(param) {
@@ -84,16 +115,21 @@ function getExerciseAttemptBest(param) {
         },
         body: JSON.stringify(param),
         credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting best exercise attempt" };
+        }
+        return response.json();
+    })
 }
 
 function getExerciseAttemptBestDescription(param) {
@@ -104,29 +140,39 @@ function getExerciseAttemptBestDescription(param) {
         },
         body: JSON.stringify(param),
         credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting description of best exercise attempt" };
+        }
+        return response.json();
+    })
 }
 
 function getTestAttempt(id) {
-    return fetch(`/api/v1/students/test-attempts/${id}`, { credentials: "include" }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
+    return fetch(`/api/v1/students/test-attempts/${id}`, { credentials: "include" })..then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting test attempt" };
+        }
+        return response.json();
+    })
 }
 
 
@@ -138,16 +184,21 @@ async function insertNewTestAttempt(param) {
         },
         body: JSON.stringify(param),
         credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error inserting new test attempt" };
+        }
+        return response.json();
+    })
 }
 
 function endTest(param) {
@@ -158,16 +209,21 @@ function endTest(param) {
         },
         body: JSON.stringify(param),
         credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error ending test" };
+        }
+        return response.json();
+    });
 }
 
 function getTestAttemptLast(param) {
@@ -178,16 +234,21 @@ function getTestAttemptLast(param) {
         },
         body: JSON.stringify(param),
         credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting last test attempt of test" };
+        }
+        return response.json();
+    });
 }
 
 function getTestAttemptBest(param) {
@@ -198,16 +259,21 @@ function getTestAttemptBest(param) {
         },
         body: JSON.stringify(param),
         credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting best attempt of test" };
+        }
+        return response.json();
+    });
 }
 
 function getTestAttemptBestDescription(param) {
@@ -218,29 +284,39 @@ function getTestAttemptBestDescription(param) {
         },
         body: JSON.stringify(param),
         credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting description of best test attempt" };
+        }
+        return response.json();
+    })
 }
 
 function getTestAttemptQuestion(id) {
-    return fetch(`/api/v1/students/test-attempts/questions/${id}`, { credentials: "include" }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list");
+    return fetch(`/api/v1/students/test-attempts/questions/${id}`, { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error getting question" };
+        }
+        return response.json();
+    });
 }
 
 async function endTestAttemptQuestion(param) {
@@ -251,16 +327,21 @@ async function endTestAttemptQuestion(param) {
         },
         body: JSON.stringify(param),
         credentials: "include"
-    }).then(
-        (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
-                throw new Error("Error getting list" + response);
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Not authenticated" };
             }
-            return response.json();
-        }).catch((error) => {
-            console.log("Error getting list");
-            return [];
-        });
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Not authorized" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Error ending question" };
+        }
+        return response.json();
+    });
 }
 
 export { getSuccessRateList, getSuccessRateSpecificStudent, getTestAttemptBest, getExerciseAttemptBest, getExercises, getTests, getStudents, getExerciseAttemptBestDescription, getTestAttemptBestDescription, insertNewTestAttempt, getTestAttemptQuestion, getTestOptions, getTestAttempt, endTestAttemptQuestion, endTest, getTestAttemptLast }

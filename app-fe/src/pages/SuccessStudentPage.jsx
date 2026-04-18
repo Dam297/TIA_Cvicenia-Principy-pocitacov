@@ -18,7 +18,7 @@ function SuccessStudentPage(props) {
         if (!props.authStatus) {
             navigate('/login')
         }
-    },[props.authStatus]);
+    }, [props.authStatus]);
 
 
     function processData(list) {
@@ -39,17 +39,31 @@ function SuccessStudentPage(props) {
     useEffect(() => {
         getSuccessRateSpecificStudent().then(
             (list) => setRowsObj(processData(list))
-        );
+        ).catch((error) => {
+            console.error(error);
+            props.setError(error.message || "Error getting success rate of strudent");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/");
+            }
+        });
 
         const fetchMessagesInterval = setInterval(() => {
             getSuccessRateSpecificStudent().then(
                 (list) => setRowsObj(processData(list))
-            );
+            ).catch((error) => {
+                console.error(error);
+                props.setError(error.message || "Error getting success rate of strudent");
+                if (error.code === 401 || error.code === 402) {
+                    props.setAuthStatus(false);
+                    navigate("/");
+                }
+            });
         }, 2000);
         return () => clearInterval(fetchMessagesInterval);
     }, []);
 
-    
+
 
     let headerRow = {
         "name": "Názov",
@@ -58,7 +72,7 @@ function SuccessStudentPage(props) {
     };
 
     return <>
-        <Nav />
+        <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError} />
         <Header name="Hodnotenie" />
         <Table header_orig={headerRow} rows={rowsObj} />
     </>;

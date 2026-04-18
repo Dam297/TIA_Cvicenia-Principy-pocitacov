@@ -26,11 +26,21 @@ function SuccessStudentsPage(props) {
 
 
     async function loadExerciseForStudent(student_id, exercise_id, count_of_questions) {
-        const attempt = await getExerciseAttemptBest({
-            "user_id": student_id,
-            "exercise_id": exercise_id,
-
-        });
+        let attempt;
+        try {
+            attempt = await getExerciseAttemptBest({
+                "user_id": student_id,
+                "exercise_id": exercise_id,
+            });
+        } catch (error) {
+            console.log(error);
+            props.setError(error.message || "Error getting success rate of exercise");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/login");
+            }
+            return;
+        };
         const maximum = count_of_questions;
         const correct = attempt["count_correct"];
         const score = correct / maximum;
@@ -40,11 +50,21 @@ function SuccessStudentsPage(props) {
     }
 
     async function loadTestForStudent(student_id, test_id, count_of_questions) {
-        const attempt = await getTestAttemptBest({
-            "user_id": student_id,
-            "test_id": test_id,
-
-        });
+        let attempt;
+        try {
+            attempt = await getTestAttemptBest({
+                "user_id": student_id,
+                "test_id": test_id,
+            });
+        } catch (error) {
+            console.log(error);
+            props.setError(error.message || "Error getting success rate of test");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/login");
+            }
+            return;
+        };
         const maximum = count_of_questions;
         const correct = attempt["count_correct"];
         const score = correct / maximum;
@@ -55,10 +75,42 @@ function SuccessStudentsPage(props) {
 
 
     async function loadData() {
-        const students = await getStudents();
-        const exercises = await getExercises();
-        const tests = await getTests();
-
+        let students;
+        let exercises;
+        let tests;
+        try {
+            students = await getStudents();
+        } catch (error) {
+            console.log(error);
+            props.setError(error.message || "Error getting students");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/login");
+            }
+            return;
+        };
+        try {
+            exercises = await getExercises();
+        } catch (error) {
+            console.log(error);
+            props.setError(error.message || "Error getting exercises");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/login");
+            }
+            return;
+        };
+        try {
+            tests = await getTests();
+        } catch (error) {
+            console.log(error);
+            props.setError(error.message || "Error getting tests");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/login");
+            }
+            return;
+        };
         setHeaderRow([
             "Meno", "Login",
             ...(exercises.map((value => value["name"]))),
@@ -112,7 +164,7 @@ function SuccessStudentsPage(props) {
     }, []);
 
     return <>
-        <Nav />
+        <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError} />
         <Header name="Úspešnosť študentov" />
         <Table header_orig={headerRow} rows={rowsArr} />
     </>;

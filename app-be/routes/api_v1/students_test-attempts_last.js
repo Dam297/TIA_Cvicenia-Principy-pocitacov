@@ -11,11 +11,11 @@ router.post('/', async function (req, res, next) {
             req.body["test_attempt_id"] = testAttemptId;
 
             const first = await getFinalTestAttempt(req.body);
-            return res.json(first.rows);
+            return res.status(200).json(first.rows);
 
         } catch (err) {
             console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).end();
         };
     }
     // not authenticated

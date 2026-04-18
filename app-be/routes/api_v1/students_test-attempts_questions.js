@@ -29,14 +29,14 @@ router.get('/:id', async function (req, res, next) {
                 first.rows[0]["test_question_answer_id"] = some.rows[0]["test_question_answer_id"];
                 first.rows[0]["count_actual"] = parseInt(first.rows[0]["count_actual"]) + 1;
 
-                return res.json(first.rows);
+                return res.status(200).json(first.rows);
             }
 
-            return res.json(first.rows);
+            return res.status(200).json(first.rows);
 
         } catch (err) {
             console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).end();
         };
     }
     // not authenticated
@@ -63,7 +63,7 @@ router.post('/', async function (req, res, next) {
 
         } catch (err) {
             console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).end();
         };
     }
     // not authenticated

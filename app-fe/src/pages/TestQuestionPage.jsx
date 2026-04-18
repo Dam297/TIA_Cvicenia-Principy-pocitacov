@@ -69,9 +69,23 @@ function TestQuestionPage(props) {
                     (list2) => {
                         setOptions(list2);
                     }
-                )
+                ).catch((error) => {
+                    console.error(error);
+                    props.setError(error.message || "Error getting question options");
+                    if (error.code === 401 || error.code === 402) {
+                        props.setAuthStatus(false);
+                        navigate("/");
+                    }
+                });
             }
-        )
+        ).catch((error) => {
+            console.error(error);
+            props.setError(error.message || "Error getting question");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/");
+            }
+        });
     }
 
     function getTime() {
@@ -79,7 +93,14 @@ function TestQuestionPage(props) {
             (list) => {
                 setTime(secondsRemaining(list[0]["start"], list[0]["max_time_s"]));
             }
-        );
+        ).catch((error) => {
+            console.error(error);
+            props.setError(error.message || "Error getting time");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/");
+            }
+        });
     }
 
     useEffect(() => {
@@ -101,20 +122,39 @@ function TestQuestionPage(props) {
     async function afterSubmit() {
         await endTestAttemptQuestion({ "test_question_answer_id": testQuestionAnswerId, "answered_options": [...selectedOptions] }).then(
             setSelectedOptions(new Set())
-        );
-        setFalse();
+        ).catch((error) => {
+            console.error(error);
+            props.setError(error.message || "Error ending test");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/");
+            }
+            return;
+        });
+
         if ((numberQuestion + 1) > countQuestion) {
-            endTest({ "test_id": id });
+            try {
+                endTest({ "test_id": id });
+            } catch (error) {
+                console.log(error);
+                props.setError(error.message || "Error ending test");
+                if (error.code === 401 || error.code === 402) {
+                    props.setAuthStatus(false);
+                    navigate("/login");
+                }
+                return;
+            };
             setNavigateTo("../end")
         } else {
             getDataQuestion();
             setNumberQuestion(numberQuestion + 1);
         }
+        setFalse();
     }
 
     return <>
         <Navigate to={navigateTo} />
-        <Nav />
+        <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError} />
         <div className="row align-items-center justify-content-center" >
             <div className="col-10 bg-light p-4 m-3">
                 <div className="row m-0">

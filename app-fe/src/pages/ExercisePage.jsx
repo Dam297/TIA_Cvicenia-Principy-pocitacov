@@ -5,9 +5,6 @@ import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-
-
-
 function ExercisePage(props) {
     const [number, setNumber] = useState(2);
     const [numberQuestion, setNumberQuestion] = useState(1);
@@ -40,7 +37,7 @@ function ExercisePage(props) {
     }
     return <>
         <Navigate to={navigateTo} />
-        <Nav />
+        <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError}/>
         <div className="row align-items-center justify-content-center" >
             <div className="col-10 bg-light p-4 m-3">
                 <div className="row m-0">

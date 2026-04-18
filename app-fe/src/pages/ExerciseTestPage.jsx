@@ -17,18 +17,32 @@ function ExerciseTestPage(props) {
         if (!props.authStatus) {
             navigate('/login')
         }
-    },[props.authStatus]);
+    }, [props.authStatus]);
 
     // periodically refresh (timer)
     useEffect(() => {
         getSuccessRateList().then(
             (list) => setList(list)
-        );
+        ).catch((error) => {
+            console.error(error);
+            props.setError(error.message || "Error getting list of exercises and tests");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/login");
+            }
+        });
 
         const fetchMessagesInterval = setInterval(() => {
             getSuccessRateList().then(
                 (list) => setList(list)
-            );
+            ).catch((error) => {
+                console.error(error);
+                props.setError(error.message || "Error getting list of exercises and tests");
+                if (error.code === 401 || error.code === 402) {
+                    props.setAuthStatus(false);
+                    navigate("/login");
+                }
+            });
         }, 2000);
         return () => clearInterval(fetchMessagesInterval);
     }, []);

@@ -18,21 +18,32 @@ function DescriptionPage(props) {
 
     // navigate to login page if not authenticated (based on React authState, not DB state) 
     useEffect(() => {
-        if (! props.authStatus) {
+        if (!props.authStatus) {
             navigate('/login');
         }
-    }, 
-    [props.authStatus]);
+    },
+        [props.authStatus]);
 
-    if(props.par["DescriptionPage"] != null){
+    if (props.par["DescriptionPage"] != null) {
         id = props.par["DescriptionPage"].id;
         isExercise = props.par["DescriptionPage"].is_exercise;
+    } else {
+        navigate('/login');
     }
-    
+
     async function startTest() {
-        props.setPar({"TestID": id});
-        await insertNewTestAttempt({ "test_id": id });
-        navigate('/test_question');
+        props.setPar({ "TestID": id });
+        try {
+            await insertNewTestAttempt({ "test_id": id });
+            navigate('/test_question');
+        } catch (error) {
+            console.log(error);
+            props.setError(error.message || "Error starting test");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/login");
+            }
+        };
     }
 
 
@@ -41,11 +52,25 @@ function DescriptionPage(props) {
         if (isExercise) {
             getExerciseAttemptBestDescription({ "exercise_id": id }).then(
                 (list) => setDescr(list[0])
-            );
+            ).catch((error) => {
+                console.error(error);
+                props.setError(error.message || "Error getting exercise description");
+                if (error.code === 401 || error.code === 402) {
+                    props.setAuthStatus(false);
+                    navigate("/login");
+                }
+            });
         } else {
             getTestAttemptBestDescription({ "test_id": id }).then(
                 (list) => setDescr(list[0])
-            );
+            ).catch((error) => {
+                console.error(error);
+                props.setError(error.message || "Error getting test description");
+                if (error.code === 401 || error.code === 402) {
+                    props.setAuthStatus(false);
+                    navigate("/login");
+                }
+            });
         }
 
 
@@ -53,18 +78,32 @@ function DescriptionPage(props) {
             if (isExercise) {
                 getExerciseAttemptBestDescription({ "exercise_id": id }).then(
                     (list) => setDescr(list[0])
-                );
+                ).catch((error) => {
+                    console.error(error);
+                    props.setError(error.message || "Error getting exercise description");
+                    if (error.code === 401 || error.code === 402) {
+                        props.setAuthStatus(false);
+                        navigate("/login");
+                    }
+                });
             } else {
                 getTestAttemptBestDescription({ "test_id": id }).then(
                     (list) => setDescr(list[0])
-                );
+                ).catch((error) => {
+                    console.error(error);
+                    props.setError(error.message || "Error getting test description");
+                    if (error.code === 401 || error.code === 402) {
+                        props.setAuthStatus(false);
+                        navigate("/login");
+                    }
+                });
             }
         }, 2000);
         return () => clearInterval(fetchMessagesInterval);
     }, []);
 
     return <>
-        <Nav />
+        <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError} />
         <div className="row align-items-center justify-content-center" >
             <DescriptionTestExercise
                 header={descr.name}
@@ -74,7 +113,7 @@ function DescriptionPage(props) {
                 bestSuccess={(descr.points === null) ? "" : descr.points + "/" + descr.count_of_questions}
                 bestSuccessTime={(descr.sec === null) ? "" : secondsToNormal(descr.sec, true)}
                 buttonLink={(isExercise === true) ? "../exercise" : ""}
-                onClickButton={(isExercise) ? () => {props.setPar({"ExerciseID": id})} : () =>{startTest()} }
+                onClickButton={(isExercise) ? () => { props.setPar({ "ExerciseID": id }) } : () => { startTest() }}
             />
         </div>
     </>;

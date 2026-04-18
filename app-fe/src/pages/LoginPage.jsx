@@ -19,6 +19,8 @@ function LoginPage(props) {
         .catch((error) => {
             console.log(error.message);
         });
+         // reset error message if the form is valid
+        props.setError('');
     }
 
     return <>

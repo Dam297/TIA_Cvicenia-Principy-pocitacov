@@ -17,11 +17,11 @@ router.get('/:id', async function (req, res, next) {
 
             const first = await getTestAttempt(param);
 
-            return res.json(first.rows);
+            return res.status(200).json(first.rows);
 
         } catch (err) {
             console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).end();
         };
     }
     // not authenticated
@@ -35,8 +35,7 @@ router.post('/', async function (req, res, next) {
         try {
             const startedTestAttempt = await getStartedTestAttempt(req.body, req.session.userId);
             if (startedTestAttempt.rows.length != 0) {
-
-                return res.json(startedTestAttempt.rows);
+                return res.status(200).json(startedTestAttempt.rows);
             }
 
             // novy pokus
@@ -46,7 +45,7 @@ router.post('/', async function (req, res, next) {
 
         } catch (err) {
             console.log(err);
-            return res.status(500);
+            return res.status(500).end();
         };
 
     }

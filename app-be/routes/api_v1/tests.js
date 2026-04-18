@@ -7,12 +7,12 @@ router.get('/', function (req, res, next) {
     if (req.session && req.session.userId) {
         getTests().then(
             (result) => {
-                res.json(result.rows);
+                res.status(200).json(result.rows);
             }
         ).catch(
             (err) => {
                 console.log(err);
-                res.status(500);
+                res.status(500).end();
             }
         );
     }
@@ -26,12 +26,12 @@ router.get('/questions/options/:id', function (req, res, next) {
     if (req.session && req.session.userId) {
         getTestOptions(req.params.id).then(
             (result) => {
-                res.json(result.rows);
+                res.status(200).json(result.rows);
             }
         ).catch(
             (err) => {
                 console.log(err);
-                res.status(500);
+                res.status(500).end();
             }
         );
     }

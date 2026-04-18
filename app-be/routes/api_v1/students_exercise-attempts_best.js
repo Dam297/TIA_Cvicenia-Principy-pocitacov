@@ -7,12 +7,12 @@ router.post('/', function (req, res, next) {
     if (req.session && req.session.userId) {
         getBestExerciseAttempt(req.body, req.session.userId).then(
             (result) => {
-                res.json(result.rows);
+                res.status(200).json(result.rows);
             }
         ).catch(
             (err) => {
                 console.log(err);
-                res.status(500);
+                res.status(500).end();
             }
         );
     }
@@ -26,12 +26,12 @@ router.post('/description', function (req, res, next) {
     if (req.session && req.session.userId) {
         getExerciseDescriptionUser(req.body, req.session.userId).then(
             (result) => {
-                res.json(result.rows);
+                res.status(200).json(result.rows);
             }
         ).catch(
             (err) => {
                 console.log(err);
-                res.status(500);
+                res.status(500).end();
             }
         );
     }

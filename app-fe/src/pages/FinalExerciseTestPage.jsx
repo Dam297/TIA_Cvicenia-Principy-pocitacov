@@ -18,7 +18,7 @@ function FinalExerciseTestPage(props) {
     // navigate to login page if not authenticated (based on React authState, not DB state) 
     useEffect(() => {
         if (!props.authStatus) {
-            navigate('/login')
+            navigate('/login');
         }
     },[props.authStatus]);
 
@@ -35,7 +35,14 @@ function FinalExerciseTestPage(props) {
             (list) => {
                 setData(list[0]);
             }
-        )
+        ).catch((error) => {
+            console.error(error);
+            props.setError(error.message || "Error getting result of test");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/login");
+            }
+        });
     }
     
     useEffect(() => {
@@ -47,7 +54,7 @@ function FinalExerciseTestPage(props) {
 
 
     return <>
-        <Nav />
+        <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError}/>
         <div className="row align-items-center justify-content-center" >
             <div className="col-10 bg-light p-4 m-3">
                 <HeaderSmall name={data["name"]} />

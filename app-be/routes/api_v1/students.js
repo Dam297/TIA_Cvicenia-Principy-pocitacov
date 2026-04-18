@@ -15,11 +15,11 @@ router.get('/', async function (req, res, next) {
             }
 
             const students = await getStudents();
-            return res.json(students.rows);
+            return res.status(200).json(students.rows);
 
         } catch (err) {
             console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).end();
         };
     }
     // not authenticated
@@ -32,12 +32,12 @@ router.get('/success-rates', function (req, res, next) {
     if (req.session && req.session.userId) {
         getListExerciseTestUser(req.session.userId).then(
             (result) => {
-                res.json(result.rows);
+                res.status(200).json(result.rows);
             }
         ).catch(
             (err) => {
                 console.log(err);
-                res.status(500);
+                res.status(500).end();
             }
         );
     }
@@ -51,12 +51,12 @@ router.get('/success-rates/specific-student', function (req, res, next) {
     if (req.session && req.session.userId) {
         getSuccessExerciseTestUser(req.session.userId).then(
             (result) => {
-                res.json(result.rows);
+                res.status(200).json(result.rows);
             }
         ).catch(
             (err) => {
                 console.log(err);
-                res.status(500);
+                res.status(500).end();
             }
         );
     }
