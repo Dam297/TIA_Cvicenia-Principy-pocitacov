@@ -27,8 +27,6 @@ function DescriptionPage(props) {
     if (props.par["DescriptionPage"] != null) {
         id = props.par["DescriptionPage"].id;
         isExercise = props.par["DescriptionPage"].is_exercise;
-    } else {
-        navigate('/login');
     }
 
     async function startTest() {

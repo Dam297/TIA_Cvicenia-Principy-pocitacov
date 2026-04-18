@@ -158,7 +158,7 @@ function getExerciseAttemptBestDescription(param) {
 }
 
 function getTestAttempt(id) {
-    return fetch(`/api/v1/students/test-attempts/${id}`, { credentials: "include" })..then((response) => {  // promise is resolved
+    return fetch(`/api/v1/students/test-attempts/${id}`, { credentials: "include" }).then((response) => {  // promise is resolved
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
@@ -340,7 +340,6 @@ async function endTestAttemptQuestion(param) {
             // other error HTTP status
             throw { code: response.status, message: "Error ending question" };
         }
-        return response.json();
     });
 }
 

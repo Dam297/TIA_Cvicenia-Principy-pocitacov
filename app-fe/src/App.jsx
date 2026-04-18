@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from "react";
-import ErrorShow from './components/Header';
+import ErrorShow from './components/ErrorShow';
 import SuccessStudentPage from './pages/SuccessStudentPage';
 import ExerciseTestPage from './pages/ExerciseTestPage';
 import DescriptionPage from './pages/DescriptionPage';
@@ -27,7 +27,7 @@ function App() {
           </Route>
           <Route
             path="/list"
-            element={<ExerciseTestPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} />}
+            element={<ExerciseTestPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} par={par} setPar={setPar} />}
           >
           </Route>
           <Route
@@ -47,12 +47,12 @@ function App() {
           </Route>
           <Route
             path="/test_question"
-            element={<TestQuestionPage authStatus={authStatus} setAuthStatus={setAuthStatus}  par={par} setPar={setPar}/>}
+            element={<TestQuestionPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError}  par={par} setPar={setPar}/>}
           >
           </Route>
           <Route
             path="/login"
-            element={<LoginPage authStatus={authStatus} setAuthStatus={setAuthStatus} setAuthStatus={setAuthStatus} />}
+            element={<LoginPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError}  />}
           >
           </Route>
           <Route
