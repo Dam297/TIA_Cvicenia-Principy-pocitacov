@@ -53,7 +53,7 @@ function SuccessStudentPage(props) {
                 (list) => setRowsObj(processData(list))
             ).catch((error) => {
                 console.error(error);
-                props.setError(error.message || "Error getting success rate of strudent");
+                props.setError(error.message || "Error getting success rate");
                 if (error.code === 401 || error.code === 402) {
                     props.setAuthStatus(false);
                     navigate("/");
