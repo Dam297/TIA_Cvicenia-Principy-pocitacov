@@ -26,6 +26,18 @@ ALTER TABLE IF EXISTS public."Test_questions" DROP CONSTRAINT IF EXISTS test_id;
 ALTER TABLE IF EXISTS public."Users" DROP CONSTRAINT IF EXISTS user_role;
 
 
+DROP TABLE IF EXISTS public."Temp_password";
+
+CREATE TABLE IF NOT EXISTS public."Temp_password"
+(
+    "user_id" integer NOT NULL,
+    "password" varchar(100) NOT NULL,
+    PRIMARY KEY ("user_id"),
+    CONSTRAINT user_id FOREIGN KEY (user_id)
+    REFERENCES public."Users" (user_id) MATCH FULL
+    ON DELETE RESTRICT
+);
+
 
 DROP TABLE IF EXISTS public."Exercise_attempts";
 

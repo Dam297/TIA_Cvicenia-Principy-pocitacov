@@ -1,4 +1,4 @@
-var pool = require('./config/db.js');
+var pool = require('../config/db');
 
 exports.getUsers = function (login) {
 	return pool.query(`
@@ -6,6 +6,22 @@ exports.getUsers = function (login) {
 			* 
 		FROM 
 			public."Users" AS u
+		WHERE 
+			u."login" = $1;
+		`, [login]
+	);
+};
+
+exports.getUsersPassword = function (login) {
+	return pool.query(`
+		SELECT 
+			* 
+		FROM 
+			public."Users" AS u
+		LEFT JOIN 
+			public."Temp_password" AS tp
+		ON 
+			u."user_id" = tp."user_id"
 		WHERE 
 			u."login" = $1;
 		`, [login]
