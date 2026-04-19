@@ -26,6 +26,18 @@ ALTER TABLE IF EXISTS public."Test_questions" DROP CONSTRAINT IF EXISTS test_id;
 ALTER TABLE IF EXISTS public."Users" DROP CONSTRAINT IF EXISTS user_role;
 
 
+DROP TABLE IF EXISTS public."Users";
+
+CREATE TABLE IF NOT EXISTS public."Users"
+(
+    user_id serial NOT NULL,
+    user_role character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    login character varying(64) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(256) COLLATE pg_catalog."default" NOT NULL,
+    name character varying(256) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "Users_pkey" PRIMARY KEY (user_id)
+);
+
 DROP TABLE IF EXISTS public."Temp_password";
 
 CREATE TABLE IF NOT EXISTS public."Temp_password"
@@ -84,7 +96,7 @@ DROP TABLE IF EXISTS public."Test_attempts";
 
 CREATE TABLE IF NOT EXISTS public."Test_attempts"
 (
-    test_attempt_id serial NOT NULL DEFAULT nextval('"Test_attempts_test_attempt_seq"'::regclass),
+    test_attempts_id serial NOT NULL,
     test_id integer NOT NULL,
     user_id integer NOT NULL,
     start timestamp with time zone NOT NULL,
@@ -96,7 +108,7 @@ DROP TABLE IF EXISTS public."Test_question_answers";
 
 CREATE TABLE IF NOT EXISTS public."Test_question_answers"
 (
-    test_question_answer_id serial NOT NULL DEFAULT nextval('"Test_question_answers_test_question_answer_seq"'::regclass),
+    test_question_answer_id serial NOT NULL,
     test_attempt_id integer NOT NULL,
     test_question_id integer NOT NULL,
     start timestamp with time zone NOT NULL,
@@ -128,7 +140,7 @@ DROP TABLE IF EXISTS public."Test_questions";
 
 CREATE TABLE IF NOT EXISTS public."Test_questions"
 (
-    test_question_id serial NOT NULL DEFAULT nextval('"Test_questions_test_questions_id_seq"'::regclass),
+    test_question_id serial NOT NULL,
     test_id integer NOT NULL,
     question text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT "Test_questions_pkey" PRIMARY KEY (test_question_id)
@@ -155,17 +167,7 @@ CREATE TABLE IF NOT EXISTS public."User_roles"
     CONSTRAINT "User_roles_pkey" PRIMARY KEY (user_role)
 );
 
-DROP TABLE IF EXISTS public."Users";
 
-CREATE TABLE IF NOT EXISTS public."Users"
-(
-    user_id serial NOT NULL,
-    user_role character varying(20) COLLATE pg_catalog."default" NOT NULL,
-    login character varying(64) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(256) COLLATE pg_catalog."default" NOT NULL,
-    name character varying(256) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT "Users_pkey" PRIMARY KEY (user_id)
-);
 
 -- required by connect-pg-simple (storing sessions in DB)
 DROP TABLE IF EXISTS "session";
@@ -221,7 +223,7 @@ ALTER TABLE IF EXISTS public."Test_attempts"
 
 ALTER TABLE IF EXISTS public."Test_question_answers"
     ADD CONSTRAINT test_attempt FOREIGN KEY (test_attempt_id)
-    REFERENCES public."Test_attempts" (test_attempt_id) MATCH FULL
+    REFERENCES public."Test_attempts" (test_attempts_id) MATCH FULL
     ON UPDATE CASCADE
     ON DELETE RESTRICT;
 
