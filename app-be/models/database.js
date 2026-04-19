@@ -28,6 +28,18 @@ exports.getUsersPassword = function (login) {
 	);
 };
 
+exports.getUserRole = function (id) {
+	return pool.query(`
+		SELECT 
+			u."user_role" 
+		FROM 
+			public."Users" AS u
+		WHERE 
+			u."user_id" = $1;
+		`, [id]
+	);
+};
+
 exports.getExercises = function () {
 	return pool.query(`
 		SELECT 

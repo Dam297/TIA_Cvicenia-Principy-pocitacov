@@ -21,7 +21,7 @@ function App() {
         <ErrorShow setError={setError} error={error} />
         <Routes>
           <Route
-            path="/"
+            path="/home"
             element={<SuccessStudentPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError}/>}
           >
           </Route>
@@ -51,7 +51,7 @@ function App() {
           >
           </Route>
           <Route
-            path="/login"
+            path="/"
             element={<LoginPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError}  />}
           >
           </Route>

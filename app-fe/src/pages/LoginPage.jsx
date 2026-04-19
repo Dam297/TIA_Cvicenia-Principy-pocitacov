@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { login } from '../services/authService';
 import { useState } from "react";
 
-
-
 function LoginPage(props) {
     const header = "Vitajte na cvičeniach z predmetu Princípy počítačov";
     const navigate = useNavigate();
@@ -28,7 +26,8 @@ function LoginPage(props) {
         login(username, password)
             .then(() => {
                 props.setAuthStatus(true);
-                navigate('/');
+                navigate("/home");
+                props.setError('');
             })
             .catch((error) => {
                 console.log(error.message);

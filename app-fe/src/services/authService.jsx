@@ -29,4 +29,23 @@ function logout() {
     
 }
 
-export { login, logout };
+function getUserRole() {
+    return fetch("/api/v1/auth/user-role", { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Neautentifikovaný" };
+            }
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Nemáte oprávnenie" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Chyba pri ziskávaní oprávnení používateľa" };
+        }
+        return response.json();
+    })
+}
+
+
+export { login, logout, getUserRole };

@@ -16,7 +16,7 @@ function SuccessStudentPage(props) {
     // navigate to login page if not authenticated (based on React authState, not DB state) 
     useEffect(() => {
         if (!props.authStatus) {
-            navigate('/login')
+            navigate("/");
         }
     }, [props.authStatus]);
 
@@ -48,7 +48,7 @@ function SuccessStudentPage(props) {
             }
         });
 
-        const fetchMessagesInterval = setInterval(() => {
+        const fetchInterval = setInterval(() => {
             getSuccessRateSpecificStudent().then(
                 (list) => setRowsObj(processData(list))
             ).catch((error) => {
@@ -60,7 +60,7 @@ function SuccessStudentPage(props) {
                 }
             });
         }, 2000);
-        return () => clearInterval(fetchMessagesInterval);
+        return () => clearInterval(fetchInterval);
     }, []);
 
 

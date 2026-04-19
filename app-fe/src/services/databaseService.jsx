@@ -3,14 +3,14 @@ function getExercises() {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting exercises" };
+            throw { code: response.status, message: "Chyba pri ziskávaní cvičení" };
         }
         return response.json();
     })
@@ -22,14 +22,14 @@ function getTests() {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting tests" };
+            throw { code: response.status, message: "Chyba pri ziskávaní testov" };
         }
         return response.json();
     });
@@ -40,14 +40,14 @@ function getTestOptions(id) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting description of test" };
+            throw { code: response.status, message: "Chyba pri ziskávaní popisu testu" };
         }
         return response.json();
     })
@@ -58,14 +58,14 @@ function getStudents() {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting students" };
+            throw { code: response.status, message: "Chyba pri ziskávaní študentov" };
         }
         return response.json();
     });
@@ -76,14 +76,14 @@ function getSuccessRateList() {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting sucess rate" };
+            throw { code: response.status, message: "Chyba pri ziskávaní úspešnosti" };
         }
         return response.json();
     });
@@ -94,14 +94,14 @@ function getSuccessRateSpecificStudent() {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting sucess-rate for student" };
+            throw { code: response.status, message: "Chyba pri ziskávaní úspešnosti študenta" };
         }
         return response.json();
     });
@@ -119,14 +119,14 @@ function getExerciseAttemptBest(param) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting best exercise attempt" };
+            throw { code: response.status, message: "Chyba pri ziskávaní najlepšieho pokusu z cvičenia" };
         }
         return response.json();
     })
@@ -144,14 +144,14 @@ function getExerciseAttemptBestDescription(param) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting description of best exercise attempt" };
+            throw { code: response.status, message: "Chyba pri ziskávaní popisu z najlepšieho pokusu cvičenia" };
         }
         return response.json();
     })
@@ -162,14 +162,14 @@ function getTestAttempt(id) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting test attempt" };
+            throw { code: response.status, message: "Chyba pri ziskávaní najlepšieho pokusu z testu" };
         }
         return response.json();
     })
@@ -188,14 +188,14 @@ async function insertNewTestAttempt(param) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error inserting new test attempt" };
+            throw { code: response.status, message: "Chyba pri vkládaní nového pokusu (test)" };
         }
         return response.json();
     })
@@ -213,14 +213,14 @@ function endTest(param) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error ending test" };
+            throw { code: response.status, message: "Chyba pri ukončení testu" };
         }
         return response.json();
     });
@@ -238,14 +238,14 @@ function getTestAttemptLast(param) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting last test attempt of test" };
+            throw { code: response.status, message: "Chyba pri ziskávaní posledného pokusu z testu" };
         }
         return response.json();
     });
@@ -263,14 +263,14 @@ function getTestAttemptBest(param) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting best attempt of test" };
+            throw { code: response.status, message: "Chyba pri ziskávaní najlepšieho pokusu z testu" };
         }
         return response.json();
     });
@@ -288,14 +288,14 @@ function getTestAttemptBestDescription(param) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting description of best test attempt" };
+            throw { code: response.status, message: "Chyba pri ziskávaní popisu z posledného pokusu z testu" };
         }
         return response.json();
     })
@@ -306,14 +306,14 @@ function getTestAttemptQuestion(id) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error getting question" };
+            throw { code: response.status, message: "Chyba pri ziskávaní otázky z testu" };
         }
         return response.json();
     });
@@ -331,14 +331,14 @@ async function endTestAttemptQuestion(param) {
         if (!response.ok) {
             // unauthenticated
             if (response.status === 401) {
-                throw { code: 401, message: "Not authenticated" };
+                throw { code: 401, message: "Neautentifikovaný" };
             }
             // unauthorized
             else if (response.status === 403) {
-                throw { code: 402, message: "Not authorized" };
+                throw { code: 402, message: "Nemáte oprávnenie" };
             }
             // other error HTTP status
-            throw { code: response.status, message: "Error ending question" };
+            throw { code: response.status, message: "Chyba pri odoslaní odpovede z testu" };
         }
     });
 }

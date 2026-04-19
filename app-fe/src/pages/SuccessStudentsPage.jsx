@@ -9,7 +9,7 @@ import { getStudents } from "../services/databaseService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { NEEDSUCCESS } from "../Const";
+import { NEEDSUCCESS, NEEDSUCCESSTEST } from "../Const";
 
 
 function SuccessStudentsPage(props) {
@@ -20,57 +20,57 @@ function SuccessStudentsPage(props) {
     // navigate to login page if not authenticated (based on React authState, not DB state) 
     useEffect(() => {
         if (!props.authStatus) {
-            navigate('/login')
+            navigate("/");
         }
     }, [props.authStatus]);
 
 
     async function loadExerciseForStudent(student_id, exercise_id, count_of_questions) {
-        let attempt;
         try {
-            attempt = await getExerciseAttemptBest({
+            const attempt = await getExerciseAttemptBest({
                 "user_id": student_id,
                 "exercise_id": exercise_id,
             });
+            const maximum = count_of_questions;
+            const correct = attempt["count_correct"];
+            const score = correct / maximum;
+            let b = (score >= NEEDSUCCESS) ? true : false;
+            props.setError('');
+
+            return [((correct == null) ? "" : correct) + "/" + maximum, b];
         } catch (error) {
             console.log(error);
             props.setError(error.message || "Error getting success rate of exercise");
             if (error.code === 401 || error.code === 402) {
                 props.setAuthStatus(false);
-                navigate("/login");
+                navigate("/");
             }
             return;
         };
-        const maximum = count_of_questions;
-        const correct = attempt["count_correct"];
-        const score = correct / maximum;
-        let b = (score >= NEEDSUCCESS) ? true : false;
 
-        return [((correct == null) ? "" : correct) + "/" + maximum, b];
     }
 
-    async function loadTestForStudent(student_id, test_id, count_of_questions) {
-        let attempt;
+    async function loadTestForStudent(student_id, test_id) {
         try {
-            attempt = await getTestAttemptBest({
+            const attempt = await getTestAttemptBest({
                 "user_id": student_id,
                 "test_id": test_id,
             });
+            if (attempt.length > 0) {
+                const correct = attempt[0]["sum_points"];
+                let b = (correct >= NEEDSUCCESSTEST) ? true : false;
+                return [((correct == null) ? "" : correct), b];
+            }
+            props.setError('');
         } catch (error) {
             console.log(error);
             props.setError(error.message || "Error getting success rate of test");
             if (error.code === 401 || error.code === 402) {
                 props.setAuthStatus(false);
-                navigate("/login");
+                navigate("/");
             }
             return;
         };
-        const maximum = count_of_questions;
-        const correct = attempt["count_correct"];
-        const score = correct / maximum;
-        let b = (score >= NEEDSUCCESS) ? true : false;
-
-        return [((correct == null) ? "" : correct) + "/" + maximum, b];
     }
 
 
@@ -80,34 +80,37 @@ function SuccessStudentsPage(props) {
         let tests;
         try {
             students = await getStudents();
+             props.setError('');
         } catch (error) {
             console.log(error);
             props.setError(error.message || "Error getting students");
             if (error.code === 401 || error.code === 402) {
                 props.setAuthStatus(false);
-                navigate("/login");
+                navigate("/");
             }
             return;
         };
         try {
             exercises = await getExercises();
+            props.setError('');
         } catch (error) {
             console.log(error);
             props.setError(error.message || "Error getting exercises");
             if (error.code === 401 || error.code === 402) {
                 props.setAuthStatus(false);
-                navigate("/login");
+                navigate("/");
             }
             return;
         };
         try {
             tests = await getTests();
+            props.setError('');
         } catch (error) {
             console.log(error);
             props.setError(error.message || "Error getting tests");
             if (error.code === 401 || error.code === 402) {
                 props.setAuthStatus(false);
-                navigate("/login");
+                navigate("/");
             }
             return;
         };
@@ -138,7 +141,7 @@ function SuccessStudentsPage(props) {
             }
 
             for (const test of tests) {
-                newRow[i] = await loadTestForStudent(student_id, test["test_id"], test["count_of_questions"]);
+                newRow[i] = await loadTestForStudent(student_id, test["test_id"]);
                 if (newRow[i][1] === false) {
                     success = false;
                 }
@@ -156,11 +159,13 @@ function SuccessStudentsPage(props) {
 
     // periodically refresh (timer)
     useEffect(() => {
-        loadData();
-        const fetchMessagesInterval = setInterval(() => {
+        setTimeout(() => {
+            loadData(); 
+        }, 0);
+        const fetchInterval = setInterval(() => {
             loadData();
         }, 10000);
-        return () => clearInterval(fetchMessagesInterval);
+        return () => clearInterval(fetchInterval);
     }, []);
 
     return <>

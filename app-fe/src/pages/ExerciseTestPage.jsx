@@ -2,7 +2,7 @@ import Nav from "../components/Nav";
 import Header from "../components/Header"
 import DescriptionTestExercise from "../components/DescriptionTestExercise";
 import { getSuccessRateList } from "../services/databaseService";
-import { NEEDSUCCESS } from "../Const";
+import { NEEDSUCCESS, NEEDSUCCESSTEST } from "../Const";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ function ExerciseTestPage(props) {
     // navigate to login page if not authenticated (based on React authState, not DB state) 
     useEffect(() => {
         if (!props.authStatus) {
-            navigate('/login')
+            navigate("/");
         }
     }, [props.authStatus]);
 
@@ -28,11 +28,11 @@ function ExerciseTestPage(props) {
             props.setError(error.message || "Error getting list of exercises and tests");
             if (error.code === 401 || error.code === 402) {
                 props.setAuthStatus(false);
-                navigate("/login");
+                navigate("/");
             }
         });
 
-        const fetchMessagesInterval = setInterval(() => {
+        const fetchInterval = setInterval(() => {
             getSuccessRateList().then(
                 (list) => setList(list)
             ).catch((error) => {
@@ -40,11 +40,11 @@ function ExerciseTestPage(props) {
                 props.setError(error.message || "Error getting list of exercises and tests");
                 if (error.code === 401 || error.code === 402) {
                     props.setAuthStatus(false);
-                    navigate("/login");
+                    navigate("/");
                 }
             });
         }, 2000);
-        return () => clearInterval(fetchMessagesInterval);
+        return () => clearInterval(fetchInterval);
     }, []);
 
     return <>
@@ -56,13 +56,14 @@ function ExerciseTestPage(props) {
                     <DescriptionTestExercise
                         key={i}
                         header={itm.name}
-                        paragraphs={itm.description}
-                        needSuccess={Math.floor(itm.count_of_questions * NEEDSUCCESS) + "/" + itm.count_of_questions}
+                        paragraphs=""
+                        needSuccess={(itm.is_exercise) ? (Math.floor(itm.count_of_questions * NEEDSUCCESS) + "/" + itm.count_of_questions) : (NEEDSUCCESSTEST)}
                         maximalTime={secondsToNormal(itm.max_time_s, true)}
                         bestSuccess={itm.points}
-                        bestSuccessTime={itm.sec}
+                        bestSuccessTime={secondsToNormal(itm.sec, true)}
                         buttonLink={"/description"}
                         onClickButton={() => { return props.setPar({ "DescriptionPage": { "id": itm.id, "is_exercise": itm.is_exercise } }) }}
+                        buttonText="Detail"
                     />
                 ))
             }

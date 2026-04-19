@@ -33,7 +33,7 @@ function TestQuestionPage(props) {
     // navigate to login page if not authenticated (based on React authState, not DB state) 
     useEffect(() => {
         if (!props.authStatus) {
-            navigate('/login')
+            navigate("/");
         }
     }, [props.authStatus]);
 
@@ -135,12 +135,13 @@ function TestQuestionPage(props) {
         if ((numberQuestion + 1) > countQuestion) {
             try {
                 endTest({ "test_id": id });
+                props.setError('');                
             } catch (error) {
                 console.log(error);
                 props.setError(error.message || "Error ending test");
                 if (error.code === 401 || error.code === 402) {
                     props.setAuthStatus(false);
-                    navigate("/login");
+                    navigate("/");
                 }
                 return;
             };

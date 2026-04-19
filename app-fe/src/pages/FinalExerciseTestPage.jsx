@@ -18,7 +18,7 @@ function FinalExerciseTestPage(props) {
     // navigate to login page if not authenticated (based on React authState, not DB state) 
     useEffect(() => {
         if (!props.authStatus) {
-            navigate('/login');
+            navigate("/");
         }
     },[props.authStatus]);
 
@@ -40,7 +40,7 @@ function FinalExerciseTestPage(props) {
             props.setError(error.message || "Error getting result of test");
             if (error.code === 401 || error.code === 402) {
                 props.setAuthStatus(false);
-                navigate("/login");
+                navigate("/");
             }
         });
     }
@@ -70,7 +70,7 @@ function FinalExerciseTestPage(props) {
 
                 <div className="row m-2 justify-content-center">
                     <div className="col-auto p-0">
-                        <Button text={"Ukončiť"} where="/" onClickButton={() => {props.setPar({})}} />
+                        <Button text={"Ukončiť"} where="/home" onClickButton={() => {props.setPar({})}} />
                     </div>
                 </div>
             </div>
