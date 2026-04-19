@@ -16,7 +16,7 @@ function ExercisePage(props) {
     // navigate to login page if not authenticated (based on React authState, not DB state) 
     useEffect(() => {
         if (!props.authStatus) {
-            navigate('/login')
+            navigate("/");
         }
     },
     [props.authStatus]);
@@ -29,7 +29,7 @@ function ExercisePage(props) {
 
     function afterSubmit() {
         if (numberQuestion >= countQuestion) {
-            setNavigateTo("/");
+            setNavigateTo("/home");
         }
         setNumber(Math.floor(Math.random() * (2 ** i - 0 + 1)));
         setNumberQuestion(numberQuestion + 1);
