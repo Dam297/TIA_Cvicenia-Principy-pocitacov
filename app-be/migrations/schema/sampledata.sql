@@ -14,9 +14,9 @@ INSERT INTO public."Users"("user_id", "user_role", "login", "email", "name") VAL
 INSERT INTO public."Temp_password"("user_id", "password") VALUES 
 ('1', '$2b$10$miemuj1H6s.1Rl/YPvLS2uNYks2Okc45HaEU1HTkm6LAEiWCGpvFe');
 INSERT INTO public."Temp_password"("user_id", "password") VALUES 
-('2', '');
+('2', '$2b$10$miemuj1H6s.1Rl/YPvLS2uNYks2Okc45HaEU1HTkm6LAEiWCGpvFe');
 INSERT INTO public."Temp_password"("user_id", "password") VALUES 
-('3', '');
+('3', '$2b$10$miemuj1H6s.1Rl/YPvLS2uNYks2Okc45HaEU1HTkm6LAEiWCGpvFe');
 
 /* Exercises */
 INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
