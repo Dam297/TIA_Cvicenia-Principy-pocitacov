@@ -59,8 +59,9 @@ function SuccessStudentsPage(props) {
             if (attempt.length > 0) {
                 const correct = attempt[0]["sum_points"];
                 let b = (correct >= NEEDSUCCESSTEST) ? true : false;
-                return [((correct == null) ? "" : correct), b];
+                return [((correct == null) ? "" : correct), false];
             }
+            return ["", false];
             props.setError('');
         } catch (error) {
             console.log(error);
@@ -69,7 +70,7 @@ function SuccessStudentsPage(props) {
                 props.setAuthStatus(false);
                 navigate("/");
             }
-            return;
+            return ["error", false];
         };
     }
 
@@ -80,7 +81,7 @@ function SuccessStudentsPage(props) {
         let tests;
         try {
             students = await getStudents();
-             props.setError('');
+            props.setError('');
         } catch (error) {
             console.log(error);
             props.setError(error.message || "Error getting students");
@@ -160,7 +161,7 @@ function SuccessStudentsPage(props) {
     // periodically refresh (timer)
     useEffect(() => {
         setTimeout(() => {
-            loadData(); 
+            loadData();
         }, 0);
         const fetchInterval = setInterval(() => {
             loadData();
