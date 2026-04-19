@@ -9,6 +9,8 @@ function ExercisePage(props) {
     const [number, setNumber] = useState(2);
     const [numberQuestion, setNumberQuestion] = useState(1);
     const [navigateTo, setNavigateTo] = useState("");
+    const [isQuestion, setIsQuestion] = useState(true);
+    const [answer, setAnswer] = useState("");
     const [i, setI] = useState(3);
 
     const navigate = useNavigate();
@@ -19,7 +21,7 @@ function ExercisePage(props) {
             navigate("/");
         }
     },
-    [props.authStatus]);
+        [props.authStatus]);
 
 
 
@@ -28,16 +30,23 @@ function ExercisePage(props) {
     let question = "Preveď číslo " + number + " z desiatkovej sústavy do dvojkovej sústavy (najpv významnejšie bity)";
 
     function afterSubmit() {
-        if (numberQuestion >= countQuestion) {
-            setNavigateTo("/home");
+        if (isQuestion) {
+            setAnswer((number).toString(2));
+            setIsQuestion(false);
+           
+        } else {
+            if (numberQuestion >= countQuestion) {
+                setNavigateTo("/home");
+            }
+            setNumber(Math.floor(Math.random() * (2 ** i - 0 + 1)));
+            setNumberQuestion(numberQuestion + 1);
+            setI(i + 1);
+            setIsQuestion(true);
         }
-        setNumber(Math.floor(Math.random() * (2 ** i - 0 + 1)));
-        setNumberQuestion(numberQuestion + 1);
-        setI(i + 1);
     }
     return <>
         <Navigate to={navigateTo} />
-        <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError}/>
+        <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError} />
         <div className="row align-items-center justify-content-center" >
             <div className="col-10 bg-light p-4 m-3">
                 <div className="row m-0">
@@ -51,12 +60,23 @@ function ExercisePage(props) {
 
                 <p className="row m-0 font-weight-bold">{question}</p>
                 <div className="row m-1">
-                    <input type="text" maxLength="16" minLength="1" className="form-control" placeholder="Odpoveď" aria-label="Odpoveď" ></input>
+                    {isQuestion 
+                    ? 
+                        <input type="text" maxLength="16" minLength="1" className="form-control" placeholder="Odpoveď" aria-label="Odpoveď" ></input> 
+                    : 
+                        <p>Správna odpoveď: {answer}</p>
+                    }
                 </div>
-
                 <div className="row m-2 justify-content-end">
                     <div className="col-auto p-0">
-                        <a type="button" className="btn btn-primary" onClick={() => { afterSubmit() }}>Ulož odpoveď a choď ďalej</a>
+                        <a type="button" className="btn btn-primary" onClick={() => { afterSubmit() }}>
+                            {isQuestion 
+                    ? 
+                            "Ulož odpoveď a choď ďalej"
+                    : 
+                            "Ďalej"
+                    }
+                            </a>
                     </div>
                 </div>
             </div>
