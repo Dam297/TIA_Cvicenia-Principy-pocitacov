@@ -2,7 +2,7 @@ import Nav from "../components/Nav";
 import Header from "../components/Header"
 import Table from "../components/Table";
 import { getSuccessRateSpecificStudent } from "../services/databaseService";
-import { NEEDSUCCESS } from "../Const";
+import { NEEDSUCCESS, NEEDSUCCESSTEST } from "../Const";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,14 +23,25 @@ function SuccessStudentPage(props) {
 
     function processData(list) {
         const output = list.map(item => {
-            const result = {};
-            const score = item["points"] / item["count_of_questions"];
-            let b = (score >= NEEDSUCCESS) ? 1 : 0;
+            if (item["is_exercise"]) {
+                const result = {};
+                const score = item["points"] / item["count_of_questions"];
+                let b = (score >= NEEDSUCCESS) ? 1 : 0;
 
-            result["name"] = [item["name"], b];
-            result["best_attempt"] = [((item["points"] === null) ? "" : item["points"]) + "/" + item["count_of_questions"], b];
-            result["time_best_attempt"] = [((item["sec"] === null) ? "" : secondsToNormal(item["sec"], true)), b];
-            return result;
+                result["name"] = [item["name"], b];
+                result["best_attempt"] = [((item["points"] === null) ? "" : item["points"]) + "/" + item["count_of_questions"], b];
+                result["time_best_attempt"] = [((item["sec"] === null) ? "" : secondsToNormal(item["sec"], true)), b];
+                return result;
+            } else {
+                const result = {};
+                const score = item["points"];
+                let b = (score < NEEDSUCCESSTEST || (item["points"] === null)) ? 0 : 1;
+
+                result["name"] = [item["name"], b];
+                result["best_attempt"] = [((item["points"] === null) ? "" : item["points"]), b];
+                result["time_best_attempt"] = [((item["sec"] === null) ? "" : secondsToNormal(item["sec"], true)), b];
+                return result;
+            }
         });
         return output;
     }
@@ -62,8 +73,6 @@ function SuccessStudentPage(props) {
         }, 2000);
         return () => clearInterval(fetchInterval);
     }, []);
-
-
 
     let headerRow = {
         "name": "Názov",

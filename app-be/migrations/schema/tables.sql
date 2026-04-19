@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS public."Test_question_answers"
     test_attempt_id integer NOT NULL,
     test_question_id integer NOT NULL,
     start timestamp with time zone NOT NULL,
-    "end" timestamp with time zone NOT NULL,
+    "end" timestamp with time zone,
     CONSTRAINT "Test_question_answers_pkey" PRIMARY KEY (test_question_answer_id)
 );
 
