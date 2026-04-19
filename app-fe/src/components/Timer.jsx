@@ -6,7 +6,7 @@ import { useRef } from 'react'
 import { useEffect } from 'react'
 import { secondsToNormal } from '../utils/TimeFormate'
 
-const INTERVAL_IN_MILISECONDS = 1000;
+const INTERVAL_IN_MILISECONDS = 100;
 
 
 function Timer({ numSec }) {

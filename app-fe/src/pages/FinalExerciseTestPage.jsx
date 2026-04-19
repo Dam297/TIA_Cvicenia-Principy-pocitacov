@@ -66,7 +66,7 @@ function FinalExerciseTestPage(props) {
                 <p className="row m-0 font-weight-bold">Čas: {secondsToNormal(data["sec"], true)}</p>
 
 
-                <p className="row m-2 font-weight-bold justify-content-center align-items-center">{((data["count_correct"]*1 + data["count_incorrect"]*-2 + data["count_empty"]*-1) >= NEEDSUCCESSTEST) ? "Úspešný pokus" : "Neúspešný pokus"}</p>
+                <p className="row m-2 font-weight-bold justify-content-center align-items-center">{((data["sec"] <= data["max_time"]) && ((data["count_correct"]*1 + data["count_incorrect"]*-2 + data["count_empty"]*-1) >= NEEDSUCCESSTEST)) ? "Úspešný pokus" : "Neúspešný pokus"}</p>
 
                 <div className="row m-2 justify-content-center">
                     <div className="col-auto p-0">

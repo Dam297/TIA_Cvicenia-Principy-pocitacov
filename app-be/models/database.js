@@ -334,7 +334,7 @@ exports.getTestAttempt = function (param) {
 		JOIN 
 			public."Tests" AS t 
 		ON 
-			t."test_id" = t."test_id"
+			ta."test_id" = t."test_id"
 		WHERE 
 			ta."test_attempts_id" = $1;
 	`, [param.test_attempt_id])
@@ -451,7 +451,8 @@ exports.getFinalTestAttempt = function (param) {
 		CROSS JOIN(
 			SELECT 
 				t."name",
-			EXTRACT(EPOCH FROM (ta."end" - ta."start")) AS "sec"
+			EXTRACT(EPOCH FROM (ta."end" - ta."start")) AS "sec",
+			t."max_time_s" AS "max_time"
 			FROM 
 				public."Tests" AS t 
 			JOIN 
