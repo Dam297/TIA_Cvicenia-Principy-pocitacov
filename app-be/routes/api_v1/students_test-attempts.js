@@ -3,6 +3,7 @@ var { getStartedTestAttempt } = require('../../models/database');
 var { getTestAttempt } = require('../../models/database');
 var { newTestAttempt } = require('../../models/database');
 var { endTest } = require('../../models/database');
+var { secondsRemaining }= require('../../utils/timeManager');
 var router = express.Router();
 
 router.get('/:id', async function (req, res, next) {
@@ -16,7 +17,9 @@ router.get('/:id', async function (req, res, next) {
             param["test_attempt_id"] = testAttemptId;
 
             const first = await getTestAttempt(param);
-
+        
+            first.rows[0]["remaining_seconds"] = secondsRemaining(first.rows[0]["start"], first.rows[0]["max_time_s"])
+            
             return res.status(200).json(first.rows);
 
         } catch (err) {

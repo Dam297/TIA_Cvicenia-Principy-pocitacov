@@ -10,13 +10,6 @@ import { endTest } from "../services/databaseService";
 import { getTestAttempt } from "../services/databaseService";
 import { useNavigate } from "react-router-dom";
 
-function secondsRemaining(date, sec) {
-    const now = Date.now();
-    const targetPlusX = new Date(date).getTime() + sec * 1000;
-    return Math.floor((targetPlusX - now) / 1000);
-}
-
-
 function TestQuestionPage(props) {
     const [numberQuestion, setNumberQuestion] = useState(0);
     const [countQuestion, setCountQuestion] = useState(0);
@@ -91,7 +84,7 @@ function TestQuestionPage(props) {
     function getTime() {
         getTestAttempt(id).then(
             (list) => {
-                setTime(secondsRemaining(list[0]["start"], list[0]["max_time_s"]));
+                setTime(list[0]["remaining_seconds"]);
             }
         ).catch((error) => {
             console.error(error);

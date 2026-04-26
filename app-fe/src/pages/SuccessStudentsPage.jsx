@@ -59,7 +59,7 @@ function SuccessStudentsPage(props) {
             if (attempt.length > 0) {
                 const correct = attempt[0]["sum_points"];
                 let b = (correct >= NEEDSUCCESSTEST) ? true : false;
-                return [((correct == null) ? "" : correct), false];
+                return [((correct == null) ? "" : correct), b];
             }
             return ["", false];
             props.setError('');
