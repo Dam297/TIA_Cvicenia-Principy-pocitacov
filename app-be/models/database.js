@@ -67,7 +67,7 @@ exports.getTests = function () {
 			t."test_id" = tq."test_id" 
 		GROUP BY t."test_id", t."name", t."enabled";
 	`)
-};	
+};
 
 exports.getTestOptions = function (questionId) {
 	return pool.query(`
@@ -308,6 +308,231 @@ exports.getExerciseDescriptionUser = function (param, userId) {
     `, [param.exercise_id, userId])
 };
 
+exports.getLastExerciseAttempt = function (param, userId) {
+	return pool.query(`
+		SELECT 
+			ea."exercise_attempt_id"
+		FROM 
+			public."Exercise_attempts" AS ea
+		WHERE 
+			ea."end" IS NOT null
+		AND 
+			ea."exercise_id" = $1
+		AND 
+			ea."user_id" = $2
+		ORDER BY ea."end" DESC 
+		LIMIT 1;
+	`, [param.exercise_id, userId])
+};
+
+exports.getFinalExerciseAttempt = function (param) {
+	return pool.query(`
+		SELECT * FROM (
+			SELECT 
+				COUNT(eqa."correct") AS "count_correct"
+			FROM 
+				public."Exercise_question_answers" AS eqa
+			WHERE 
+				eqa."exercise_attempt_id" = $1
+			AND
+				eqa."correct" = True
+		)
+		CROSS JOIN(
+			SELECT 
+				e."name",
+			EXTRACT(EPOCH FROM (ea."end" - ea."start")) AS "sec",
+			e."max_time_s" AS "max_time",
+			e."count_of_questions" AS "count_questions"
+			FROM 
+				public."Exercises" AS e
+			JOIN 
+				public."Exercise_attempts" AS ea
+			ON 
+				e."exercise_id" = ea."exercise_id"
+			WHERE 
+				ea."exercise_attempt_id" = $1);
+	`, [param.exercise_attempt_id])
+};
+
+exports.getStartedExerciseAttempt = function (param, userId) {
+	return pool.query(`
+		SELECT 
+			ea."exercise_attempt_id"
+		FROM 
+			public."Exercise_attempts" AS ea 
+		WHERE 
+			ea."end" IS null
+		AND 
+			ea."exercise_id" = $1
+		AND 
+			ea."user_id" = $2
+		ORDER BY exercise_attempt_id ASC; 
+	`, [param.exercise_id, userId])
+};
+
+
+exports.newExerciseAttempt = function (param, userId) {
+	return pool.query(`
+		INSERT INTO 
+			public."Exercise_attempts" ("exercise_id", "user_id", "start") 
+		VALUES 
+			($1, $2, NOW());
+	`, [param.exercise_id, userId])
+};
+
+exports.endExercise = function (param) {
+	return pool.query(`
+		UPDATE public."Exercise_attempts" as ea
+		SET "end" = (
+			SELECT 
+				eqa."end"
+			FROM 
+				public."Exercise_question_answers" as eqa
+			WHERE 
+				eqa."exercise_attempt_id" = $1
+			ORDER BY eqa."end" DESC
+			LIMIT 1
+		)
+		WHERE 
+			ea."exercise_attempt_id" =  $1;
+	`, [param.exercise_attempt_id])
+};
+
+exports.getExerciseAttempt = function (param) {
+	return pool.query(`
+		SELECT 
+			ea."start", e."max_time_s"
+		FROM 
+			public."Exercise_attempts" AS ea
+		JOIN 
+			public."Exercises" AS e 
+		ON 
+			ea."exercise_id" = e."exercise_id"
+		WHERE 
+			ea."exercise_attempt_id" = $1
+	`, [param.exercise_attempt_id])
+};
+
+exports.getExerciseQuestion = function (param) {
+	return pool.query(`
+		SELECT *
+		FROM (	
+			SELECT 
+				count_of_questions AS "count_maximum"
+			FROM 
+				public."Exercises" AS e
+			WHERE 
+				e."exercise_id" = $1
+		)
+		CROSS JOIN (
+			SELECT 
+				COUNT(1) AS "count_actual"
+			FROM 
+				public."Exercise_question_answers" AS eqa
+			WHERE 
+				eqa."exercise_attempt_id" = $2)
+		LEFT JOIN (
+			SELECT 
+				eqa."exercise_question_answer_id", 
+				eqa."question"
+			FROM 
+				public."Exercise_attempts" AS ea
+			LEFT JOIN 
+			(
+				SELECT
+					*
+				FROM 
+					public."Exercise_question_answers" AS eqa2
+				WHERE 
+					eqa2."exercise_attempt_id" = $2
+			) AS eqa
+			ON 
+				eqa."exercise_attempt_id" = ea."exercise_attempt_id" 
+			WHERE 
+				ea."exercise_id" = $1
+			AND 
+				eqa."end" IS NULL
+			ORDER BY eqa."start" ASC, eqa."exercise_attempt_id" ASC
+			LIMIT 1
+			) ON TRUE;		
+    `, [param.exercise_id, param.exercise_attempt_id])
+};
+
+exports.startExerciseQuestion = function (param) {
+	return pool.query(`	
+		INSERT INTO 
+			public."Exercise_question_answers" ("exercise_attempt_id", "question", "correct_answer", "start") 
+		VALUES 
+			($1, $2, $3, NOW()) 
+		RETURNING 
+			public."Exercise_question_answers"."exercise_question_answer_id";
+	`, [param.exercise_attempt_id, param.question, param.correct_answer])
+};
+
+exports.endExerciseQuestion = function (param) {
+	return pool.query(`
+		UPDATE 
+			public."Exercise_question_answers" SET "end" = NOW() 
+		WHERE "exercise_question_answer_id" = $1;
+	`, [param.exercise_question_answer_id])
+};
+
+exports.setAnswerExerciseQuestion = function (param) {
+	return pool.query(`
+		UPDATE 
+			public."Exercise_question_answers" 
+				SET "student_answer" = $2,
+				"correct" = $3
+		WHERE "exercise_question_answer_id" = $1;
+	`, [param.exercise_question_answer_id, param.student_answer, param.correct])
+};
+
+exports.checkAuthExerciseQuestion = function (param, userId) {
+	return pool.query(`
+		SELECT 
+			1 
+		FROM 
+			public."Exercise_attempts" AS ea
+		JOIN 
+			public."Exercise_question_answers" AS eqa 
+		ON 
+			ea."exercise_attempt_id" = eqa."exercise_attempt_id"
+		WHERE 
+			eqa."exercise_question_answer_id" = $1
+		AND ea."user_id" = $2;
+	`, [param.exercise_question_answer_id, userId])
+};
+
+exports.checkAuthExerciseQuestionCorrectAnswer = function (param, userId) {
+	return pool.query(`
+		SELECT 
+			1
+		FROM 
+			public."Exercise_attempts" AS ea
+		JOIN 
+			public."Exercise_question_answers" AS eqa 
+		ON 
+			ea."exercise_attempt_id" = eqa."exercise_attempt_id"
+		WHERE 
+			eqa."exercise_question_answer_id" = $1
+		AND ea."user_id" = $2
+		AND eqa."end" IS NOT NULL
+		AND eqa."student_answer" IS NOT NULL
+		AND eqa."correct" IS NOT NULL
+		;
+	`, [param.exercise_question_answer_id, userId])
+};
+
+exports.getExerciseQuestionCorrectAnswer = function (param) {
+	return pool.query(`
+		SELECT
+			eqa."correct_answer",
+			eqa."correct"
+		FROM
+			public."Exercise_question_answers" AS eqa
+		WHERE eqa."exercise_question_answer_id" = $1
+	`, [param.exercise_question_answer_id])
+};
 
 exports.getStartedTestAttempt = function (param, userId) {
 	return pool.query(`

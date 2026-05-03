@@ -70,11 +70,11 @@ CREATE TABLE IF NOT EXISTS public."Exercise_question_answers"
     exercise_question_answer_id serial NOT NULL,
     exercise_attempt_id integer NOT NULL,
     question text COLLATE pg_catalog."default" NOT NULL,
-    student_answer text COLLATE pg_catalog."default" NOT NULL,
+    student_answer text COLLATE pg_catalog."default",
     correct_answer text COLLATE pg_catalog."default" NOT NULL,
-    correct boolean NOT NULL,
+    correct boolean,
     start timestamp with time zone NOT NULL,
-    "end" timestamp with time zone NOT NULL,
+    "end" timestamp with time zone,
     CONSTRAINT "Exercise_question_answers_pkey" PRIMARY KEY (exercise_question_answer_id)
 );
 

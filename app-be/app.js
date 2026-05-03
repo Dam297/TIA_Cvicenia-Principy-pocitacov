@@ -10,7 +10,10 @@ var authRouter = require('./routes/api_v1/auth');
 var exercisesRouter = require('./routes/api_v1/exercises');
 var testsRouter = require('./routes/api_v1/tests');
 var studentsRouter = require('./routes/api_v1/students');
+var studentsExerciseAttemptsRouter = require('./routes/api_v1/students_exercise-attempts.js');
+var studentsExerciseAttemptsLastRouter = require('./routes/api_v1/students_exercise-attempts_last.js')
 var studentsExerciseAttemptsBestRouter = require('./routes/api_v1/students_exercise-attempts_best.js')
+var studentsExerciseAttemptsQuestionsRouter = require('./routes/api_v1/students_exercise-attempts_questions.js');
 var studentsTestAttemptsRouter = require('./routes/api_v1/students_test-attempts.js');
 var studentsTestAttemptsLastRouter = require('./routes/api_v1/students_test-attempts_last.js');
 var studentsTestAttemptsBestRouter = require('./routes/api_v1/students_test-attempts_best.js');
@@ -58,7 +61,10 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/exercises', exercisesRouter);
 app.use('/api/v1/tests', testsRouter);
 app.use('/api/v1/students', studentsRouter);
+app.use('/api/v1/students/exercise-attempts', studentsExerciseAttemptsRouter);
+app.use('/api/v1/students/exercise-attempts/last', studentsExerciseAttemptsLastRouter);
 app.use('/api/v1/students/exercise-attempts/best', studentsExerciseAttemptsBestRouter);
+app.use('/api/v1/students/exercise-attempts/questions', studentsExerciseAttemptsQuestionsRouter);
 app.use('/api/v1/students/test-attempts', studentsTestAttemptsRouter);
 app.use('/api/v1/students/test-attempts/last', studentsTestAttemptsLastRouter);
 app.use('/api/v1/students/test-attempts/best', studentsTestAttemptsBestRouter);
