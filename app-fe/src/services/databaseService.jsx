@@ -157,6 +157,168 @@ function getExerciseAttemptBestDescription(param) {
     })
 }
 
+async function insertNewExerciseAttempt(param) {
+    return fetch("/api/v1/students/exercise-attempts", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Neautentifikovaný" };
+            }
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Nemáte oprávnenie" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Chyba pri vkládaní nového pokusu (cvičenie)" };
+        }
+        return response.json();
+    })
+}
+
+function getExerciseAttempt(id) {
+    return fetch(`/api/v1/students/exercise-attempts/${id}`, { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Neautentifikovaný" };
+            }
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Nemáte oprávnenie" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Chyba pri ziskávaní najlepšieho pokusu z cvičenia" };
+        }
+        return response.json();
+    })
+}
+
+function endExercise(param) {
+    return fetch("/api/v1/students/exercise-attempts", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Neautentifikovaný" };
+            }
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Nemáte oprávnenie" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Chyba pri ukončení cvičenia" };
+        }
+        return response.json();
+    });
+}
+
+function getExerciseAttemptLast(param) {
+    return fetch("/api/v1/students/exercise-attempts/last", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Neautentifikovaný" };
+            }
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Nemáte oprávnenie" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Chyba pri ziskávaní posledného pokusu z cvičenia" };
+        }
+        return response.json();
+    });
+}
+
+
+function getExerciseAttemptQuestion(id) {
+    return fetch(`/api/v1/students/exercise-attempts/questions/${id}`, { credentials: "include" }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Neautentifikovaný" };
+            }
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Nemáte oprávnenie" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Chyba pri ziskávaní otázky z cvičenia" };
+        }
+        return response.json();
+    });
+}
+
+async function endExerciseAttemptQuestion(param) {
+    return fetch("/api/v1/students/exercise-attempts/questions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Neautentifikovaný" };
+            }
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Nemáte oprávnenie" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Chyba pri odoslaní odpovede z cvičenia" };
+        }
+    });
+}
+
+async function getExerciseAttemptQuestionCorrectAnswer(param) {
+    return fetch("/api/v1/students/exercise-attempts/questions/correct-answer", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param),
+        credentials: "include"
+    }).then((response) => {  // promise is resolved
+        if (!response.ok) {
+            // unauthenticated
+            if (response.status === 401) {
+                throw { code: 401, message: "Neautentifikovaný" };
+            }
+            // unauthorized
+            else if (response.status === 403) {
+                throw { code: 402, message: "Nemáte oprávnenie" };
+            }
+            // other error HTTP status
+            throw { code: response.status, message: "Chyba pri získavaní správnej odpovede (cvičenie)" };
+        }
+        return response.json();
+
+    });
+}
+
 function getTestAttempt(id) {
     return fetch(`/api/v1/students/test-attempts/${id}`, { credentials: "include" }).then((response) => {  // promise is resolved
         if (!response.ok) {
@@ -343,4 +505,4 @@ async function endTestAttemptQuestion(param) {
     });
 }
 
-export { getSuccessRateList, getSuccessRateSpecificStudent, getTestAttemptBest, getExerciseAttemptBest, getExercises, getTests, getStudents, getExerciseAttemptBestDescription, getTestAttemptBestDescription, insertNewTestAttempt, getTestAttemptQuestion, getTestOptions, getTestAttempt, endTestAttemptQuestion, endTest, getTestAttemptLast }
+export { getSuccessRateList, getSuccessRateSpecificStudent, getTestAttemptBest, getExerciseAttemptBest, getExercises, getTests, getStudents, getExerciseAttemptBestDescription, getTestAttemptBestDescription, insertNewTestAttempt, getTestAttemptQuestion, getTestOptions, getTestAttempt, endTestAttemptQuestion, endTest, getTestAttemptLast, insertNewExerciseAttempt, getExerciseAttempt, endExercise, getExerciseAttemptQuestion, endExerciseAttemptQuestion, getExerciseAttemptQuestionCorrectAnswer,  getExerciseAttemptLast }

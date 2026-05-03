@@ -4,7 +4,8 @@ import ErrorShow from './components/ErrorShow';
 import SuccessStudentPage from './pages/SuccessStudentPage';
 import ExerciseTestPage from './pages/ExerciseTestPage';
 import DescriptionPage from './pages/DescriptionPage';
-import FinalExerciseTestPage from './pages/FinalExerciseTestPage';
+import FinalTestPage from './pages/FinalTestPage';
+import FinalExercisePage from './pages/FinalExercisePage';
 import SuccessStudentsPage from './pages/SuccessStudentsPage';
 import TestQuestionPage from './pages/TestQuestionPage';
 import LoginPage from './pages/LoginPage';
@@ -14,7 +15,7 @@ function App() {
   const [par, setPar] = useState([]);
   const [error, setError] = useState('');
   const [authStatus, setAuthStatus] = useState(false);
-  
+
   return (
     <div className="container">
       <BrowserRouter>
@@ -22,7 +23,7 @@ function App() {
         <Routes>
           <Route
             path="/home"
-            element={<SuccessStudentPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError}/>}
+            element={<SuccessStudentPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} />}
           >
           </Route>
           <Route
@@ -32,32 +33,37 @@ function App() {
           </Route>
           <Route
             path="/description"
-            element={<DescriptionPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError}  par={par} setPar={setPar}/>}
+            element={<DescriptionPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} par={par} setPar={setPar} />}
           >
           </Route>
           <Route
             path="/end"
-            element={<FinalExerciseTestPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} par={par} setPar={setPar}/>}
+            element={<FinalTestPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} par={par} setPar={setPar} />}
+          >
+          </Route>
+          <Route
+            path="/end-exercise"
+            element={<FinalExercisePage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} par={par} setPar={setPar} />}
           >
           </Route>
           <Route
             path="/students"
-            element={<SuccessStudentsPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError}  />}
+            element={<SuccessStudentsPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} />}
           >
           </Route>
           <Route
             path="/test_question"
-            element={<TestQuestionPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError}  par={par} setPar={setPar}/>}
+            element={<TestQuestionPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} par={par} setPar={setPar} />}
           >
           </Route>
           <Route
             path="/"
-            element={<LoginPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError}  />}
+            element={<LoginPage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} />}
           >
           </Route>
           <Route
             path="/exercise"
-            element={<ExercisePage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} />}
+            element={<ExercisePage authStatus={authStatus} setAuthStatus={setAuthStatus} setError={setError} par={par} />}
           >
           </Route>
         </Routes>

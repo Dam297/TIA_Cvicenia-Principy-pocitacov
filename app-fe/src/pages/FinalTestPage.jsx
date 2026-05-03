@@ -9,7 +9,7 @@ import { secondsToNormal } from "../utils/TimeFormate"
 import { NEEDSUCCESSTEST } from "../Const";
 
 
-function FinalExerciseTestPage(props) {
+function FinalTestPage(props) {
     const [data, setData] = useState(0);
     const fetched = useRef(false);
 
@@ -26,9 +26,7 @@ function FinalExerciseTestPage(props) {
     let id = -1;
     if(props.par["TestID"] != null ){
         id = props.par["TestID"];
-    } else if(props.par["ExerciseID"] != null){
-        id = props.par["ExerciseID"];
-    }
+    } 
 
      function getData() {
         getTestAttemptLast({ "test_id": id}).then(
@@ -65,7 +63,6 @@ function FinalExerciseTestPage(props) {
                 <p className="row m-0 font-weight-bold">Počet získaných bodov: {data["count_correct"]*1 + data["count_incorrect"]*-2 + data["count_empty"]*-1}</p>
                 <p className="row m-0 font-weight-bold">Čas: {secondsToNormal(data["sec"], true)}</p>
 
-
                 <p className="row m-2 font-weight-bold justify-content-center align-items-center">{((data["sec"] <= data["max_time"]) && ((data["count_correct"]*1 + data["count_incorrect"]*-2 + data["count_empty"]*-1) >= NEEDSUCCESSTEST)) ? "Úspešný pokus" : "Neúspešný pokus"}</p>
 
                 <div className="row m-2 justify-content-center">
@@ -78,4 +75,4 @@ function FinalExerciseTestPage(props) {
     </>
 }
 
-export default FinalExerciseTestPage
+export default FinalTestPage

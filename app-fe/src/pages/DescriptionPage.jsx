@@ -3,8 +3,9 @@ import DescriptionTestExercise from "../components/DescriptionTestExercise";
 import { getExerciseAttemptBestDescription } from "../services/databaseService";
 import { getTestAttemptBestDescription } from "../services/databaseService";
 import { insertNewTestAttempt } from "../services/databaseService";
+import { insertNewExerciseAttempt } from "../services/databaseService";
 import { secondsToNormal } from "../utils/TimeFormate"
-import { NEEDSUCCESS, NEEDSUCCESSTEST} from "../Const";
+import { NEEDSUCCESS, NEEDSUCCESSTEST } from "../Const";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -27,6 +28,22 @@ function DescriptionPage(props) {
     if (props.par["DescriptionPage"] != null) {
         id = props.par["DescriptionPage"].id;
         isExercise = props.par["DescriptionPage"].is_exercise;
+    }
+
+    async function startExercise() {
+        props.setPar({ "ExerciseID": id })
+        try {
+            await insertNewExerciseAttempt({ "exercise_id": id });
+            navigate('/exercise');
+            props.setError('');
+        } catch (error) {
+            console.log(error);
+            props.setError(error.message || "Error starting exercise");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/");
+            }
+        };
     }
 
     async function startTest() {
@@ -112,7 +129,7 @@ function DescriptionPage(props) {
                 bestSuccess={(descr.points === null) ? "" : descr.points}
                 bestSuccessTime={(descr.sec === null) ? "" : secondsToNormal(descr.sec, true)}
                 buttonLink={(isExercise === true) ? "../exercise" : ""}
-                onClickButton={(isExercise) ? () => { props.setPar({ "ExerciseID": id }) } : () => { startTest() }}
+                onClickButton={(isExercise) ? () => { startExercise() } : () => { startTest() }}
             />
         </div>
     </>;

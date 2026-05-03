@@ -1,18 +1,29 @@
 import Nav from "../components/Nav";
-import Timer from "../components/Timer";
+import ExerciseBox from "../components/ExerciseBox";
 import { useState } from 'react';
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { endExercise, getExerciseAttemptQuestionCorrectAnswer } from "../services/databaseService";
+import { getExerciseAttempt } from "../services/databaseService";
+import { getExerciseAttemptQuestion } from "../services/databaseService";
+import { endExerciseAttemptQuestion } from "../services/databaseService";
+
 
 function ExercisePage(props) {
-    const [number, setNumber] = useState(2);
-    const [numberQuestion, setNumberQuestion] = useState(1);
+    const [numberQuestion, setNumberQuestion] = useState(0);
+    const [countQuestion, setCountQuestion] = useState(0);
+    const [question, setQuestion] = useState("");
+    const [exerciseQuestionAnswerId, setExerciseQuestionAnswerId] = useState("");
+    const [time, setTime] = useState(10);
     const [navigateTo, setNavigateTo] = useState("");
     const [isQuestion, setIsQuestion] = useState(true);
     const [answer, setAnswer] = useState("");
-    const [i, setI] = useState(3);
+    const [correctAnswer, setCorrectAnswer] = useState("");
+    const [correct, setCorrect] = useState(false);
 
+
+    const fetched = useRef(false);
     const navigate = useNavigate();
 
     // navigate to login page if not authenticated (based on React authState, not DB state) 
@@ -23,64 +34,127 @@ function ExercisePage(props) {
     },
         [props.authStatus]);
 
+    let id = -1;
+    if (props.par["ExerciseID"] != null) {
+        id = props.par["ExerciseID"];
+    }
 
 
-    let countQuestion = 10;
-    let time = 30 * 60 * 60;
-    let question = "Preveď číslo " + number + " z desiatkovej sústavy do dvojkovej sústavy (najpv významnejšie bity)";
+    function getDataQuestion() {
+        getExerciseAttemptQuestion(id).then(
+            (list) => {
+                setQuestion(list[0]["question"])
+                setNumberQuestion(Number(list[0]["count_actual"]));
+                setCountQuestion(Number(list[0]["count_maximum"]));
+                setExerciseQuestionAnswerId(Number(list[0]["exercise_question_answer_id"]))
+            }
+        ).catch((error) => {
+            console.error(error);
+            props.setError(error.message || "Error getting question");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/");
+            }
+        });
+    }
 
-    function afterSubmit() {
+    function getTime() {
+        getExerciseAttempt(id).then(
+            (list) => {
+                setTime(list[0]["remaining_seconds"]);
+            }
+        ).catch((error) => {
+            console.error(error);
+            props.setError(error.message || "Error getting time");
+            if (error.code === 401 || error.code === 402) {
+                props.setAuthStatus(false);
+                navigate("/");
+            }
+        });
+    }
+
+    const handleAnswer = (e) => setAnswer(e.target.value);
+
+
+    useEffect(() => {
+        if (fetched.current) return;
+        fetched.current = true;
+        getDataQuestion();
+        getTime();
+    }, []);
+
+    async function afterSubmit() {
         if (isQuestion) {
-            setAnswer((number).toString(2));
-            setIsQuestion(false);
-           
+            await endExerciseAttemptQuestion({ "exercise_question_answer_id": exerciseQuestionAnswerId, "student_answer": answer }).then(
+                setIsQuestion(false)
+            ).catch((error) => {
+                console.error(error);
+                props.setError(error.message || "Error ending exercise");
+                if (error.code === 401 || error.code === 402) {
+                    props.setAuthStatus(false);
+                    navigate("/");
+                }
+                return;
+            });
+
+            await getExerciseAttemptQuestionCorrectAnswer({ "exercise_question_answer_id": exerciseQuestionAnswerId }).then(
+                (result) => {
+                    setCorrectAnswer(result[0]["correct_answer"]);
+                    setCorrect(result[0]["correct"]);
+                }
+            ).catch((error) => {
+                console.error(error);
+                props.setError(error.message || "Error ending exercise");
+                if (error.code === 401 || error.code === 402) {
+                    props.setAuthStatus(false);
+                    navigate("/");
+                }
+                return;
+            });
+
+            if (numberQuestion >= countQuestion) {
+                try {
+                    endExercise({ "exercise_id": id });
+                    props.setError('');
+                } catch (error) {
+                    console.log(error);
+                    props.setError(error.message || "Error ending exercise");
+                    if (error.code === 401 || error.code === 402) {
+                        props.setAuthStatus(false);
+                        navigate("/");
+                    }
+                    return;
+                };
+            }
         } else {
             if (numberQuestion >= countQuestion) {
-                setNavigateTo("/home");
+                setNavigateTo("/end-exercise");
+            } else {
+                getDataQuestion();
+                setNumberQuestion(numberQuestion + 1);
+                setIsQuestion(true);
+                setAnswer("");
+                setCorrectAnswer("");
+                setCorrect(false);
             }
-            setNumber(Math.floor(Math.random() * (2 ** i - 0 + 1)));
-            setNumberQuestion(numberQuestion + 1);
-            setI(i + 1);
-            setIsQuestion(true);
         }
     }
+
     return <>
         <Navigate to={navigateTo} />
         <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError} />
-        <div className="row align-items-center justify-content-center" >
-            <div className="col-10 bg-light p-4 m-3">
-                <div className="row m-0">
-                    <div className="col-6 m-0 p-0">
-                        <h3 className="text-start">{numberQuestion}/{countQuestion}</h3>
-                    </div>
-                    <div className="col-6 m-0 p-0">
-                        <p className="text-end">Zostavajúci čas: <Timer numSec={time} /></p>
-                    </div>
-                </div>
-
-                <p className="row m-0 font-weight-bold">{question}</p>
-                <div className="row m-1">
-                    {isQuestion 
-                    ? 
-                        <input type="text" maxLength="16" minLength="1" className="form-control" placeholder="Odpoveď" aria-label="Odpoveď" ></input> 
-                    : 
-                        <p>Správna odpoveď: {answer}</p>
-                    }
-                </div>
-                <div className="row m-2 justify-content-end">
-                    <div className="col-auto p-0">
-                        <a type="button" className="btn btn-primary" onClick={() => { afterSubmit() }}>
-                            {isQuestion 
-                    ? 
-                            "Ulož odpoveď a choď ďalej"
-                    : 
-                            "Ďalej"
-                    }
-                            </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <ExerciseBox
+            numberQuestion={numberQuestion}
+            countQuestion={countQuestion}
+            time={time}
+            question={question}
+            isQuestion={isQuestion}
+            answer={answer}
+            handleAnswer={handleAnswer}
+            correctAnswer={correctAnswer}
+            isCorrect={correct}
+            afterSubmit={afterSubmit}
+        />
     </>;
 }
 
