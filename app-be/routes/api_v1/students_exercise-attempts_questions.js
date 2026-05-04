@@ -7,6 +7,7 @@ var { setAnswerExerciseQuestion } = require('../../models/database');
 var { getExerciseQuestionCorrectAnswer } = require('../../models/database');
 var { checkAuthExerciseQuestion } = require('../../models/database');
 var { checkAuthExerciseQuestionCorrectAnswer } = require('../../models/database');
+var { generateExercise } = require('../../utils/generateExercise');
 
 
 var router = express.Router();
@@ -24,12 +25,12 @@ router.get('/:id', async function (req, res, next) {
             const first = await getExerciseQuestion(param);
 
             if (first.rows[0]["exercise_question_answer_id"] === null) {
-                let quest = "Koľko je 2 v dvojkovej sústave?";
-                param["question"] = quest;
-                param["correct_answer"] = "10";
+                const concreteExercise = generateExercise(req.params.id);
+                param["question"] = concreteExercise["question"];
+                param["correct_answer"] = concreteExercise["correct_answer"];
                 const some = await startExerciseQuestion(param);
 
-                first.rows[0]["question"] = quest;
+                first.rows[0]["question"] = concreteExercise["question"];
                 first.rows[0]["exercise_question_answer_id"] = some.rows[0]["exercise_question_answer_id"];
                 first.rows[0]["count_actual"] = parseInt(first.rows[0]["count_actual"]) + 1;
 

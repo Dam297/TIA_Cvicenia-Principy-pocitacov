@@ -20,9 +20,17 @@ INSERT INTO public."Temp_password"("user_id", "password") VALUES
 
 /* Exercises */
 INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
-('1', 'Prevod celého čísla z 2 do 10 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 2 do 10 sústavy', '10', '1800', 'true');
+('1', 'Prevod celého čísla z 10 do 2 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 10 do 2 sústavy', '10', '1800', 'true');
 INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
-('2', 'Prevod celého čísla z 10 do 2 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 10 do 2 sústavy', '10', '1800', 'true');
+('2', 'Prevod celého čísla z 2 do 10 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 2 do 10 sústavy', '10', '1800', 'true');
+INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
+('3', 'Prevod celého čísla z 10 do 16 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 10 do 16 sústavy', '10', '1800', 'true');
+INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
+('4', 'Prevod celého čísla z 16 do 10 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 16 do 10 sústavy', '10', '1800', 'true');
+INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
+('5', 'Prevod celého čísla z 2 do 16 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 2 do 16 sústavy', '10', '1800', 'true');
+INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
+('6', 'Prevod celého čísla z 16 do 2 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 16 do 2 sústavy', '10', '1800', 'true');
 
 /* Tests */
 INSERT INTO public."Tests"("test_id", "name", "description", "max_time_s", "enabled") VALUES 
