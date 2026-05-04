@@ -1,7 +1,8 @@
 var { generateNumber } = require('../utils/generateExerciseNumbers/conversionNumbers');
 var { generateNumberBcd } = require('../utils/generateExerciseNumbers/conversionBcd');
 var { generateOhm } = require('../utils/generateExerciseNumbers/ohm');
-
+var { generateSum } = require('../utils/generateExerciseNumbers/sum');
+var { generateReciprocalSum } = require('../utils/generateExerciseNumbers/reciprocalSum');
 
 function generateExercise(id) {
     const concreteExercise = {};
@@ -54,8 +55,20 @@ function generateExercise(id) {
             concreteExercise["question"] = obj["question"];
             concreteExercise["correct_answer"] = obj["correct_answer"];
             break;
+        case 10:
+            const choose = Math.floor(Math.random() * 2);
+            console.log(choose);
+            if (choose === 0) {
+                obj = generateSum();
+                concreteExercise["question"] = "Výpočítajte celkový odpor sériovo zapojených rezistorov, ak odpor prvého rezistora je " + obj["x1"] + "Ω a odpor druhého rezistora je " + obj["x2"] + "Ω. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["correct_answer"] = obj["result"];
+            } else if (choose === 1) {
+                obj = generateReciprocalSum();
+                concreteExercise["question"] = "Výpočítajte celkový odpor paralelne zapojených rezistorov, ak odpor prvého rezistora je " + obj["x1"] + "Ω a odpor druhého rezistora je " + obj["x2"] + "Ω. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["correct_answer"] = obj["result"];
+            }
+            break;
         default:
-        // code block
     }
     return concreteExercise;
 }

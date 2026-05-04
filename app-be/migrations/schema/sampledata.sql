@@ -37,6 +37,8 @@ INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_q
 ('8', 'Prevod celého čísla z BCD kódu do 10 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z BCD kódu do 10 sústavy', '10', '1800', 'true');
 INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
 ('9', 'Výpočet pomocou Ohmovho zákona', 'Cieľom cvičenia je precvičenie výpočtu prúdu, napätia a odporu pomocou Ohmovho zákona', '10', '1800', 'true');
+INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
+('10', 'Sériové a paralelné zapojenie rezistorov', 'Cieľom cvičenia je precvičenie výpočtu odporu v sériovom a paralelnom zapojení rezistorov', '10', '1800', 'true');
 
 /* Tests */
 INSERT INTO public."Tests"("test_id", "name", "description", "max_time_s", "enabled") VALUES 
