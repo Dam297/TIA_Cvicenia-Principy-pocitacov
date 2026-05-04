@@ -1,5 +1,7 @@
 var { generateNumber } = require('../utils/generateExerciseNumbers/conversionNumbers');
 var { generateNumberBcd } = require('../utils/generateExerciseNumbers/conversionBcd');
+var { generateOhm } = require('../utils/generateExerciseNumbers/ohm');
+
 
 function generateExercise(id) {
     const concreteExercise = {};
@@ -46,6 +48,11 @@ function generateExercise(id) {
             obj = generateNumberBcd(2, 10);
             concreteExercise["question"] = "Preveďte číslo " + obj["from"] + " z BCD kódu do 10 sústavy";
             concreteExercise["correct_answer"] = obj["to"];
+            break;
+        case 9:
+            obj = generateOhm();
+            concreteExercise["question"] = obj["question"];
+            concreteExercise["correct_answer"] = obj["correct_answer"];
             break;
         default:
         // code block
