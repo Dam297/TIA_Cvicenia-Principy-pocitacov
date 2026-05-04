@@ -31,6 +31,10 @@ INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_q
 ('5', 'Prevod celého čísla z 2 do 16 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 2 do 16 sústavy', '10', '1800', 'true');
 INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
 ('6', 'Prevod celého čísla z 16 do 2 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 16 do 2 sústavy', '10', '1800', 'true');
+INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
+('7', 'Prevod celého čísla z 10 sústavy do BCD kódu', 'Cieľom cvičenia je precvičenie prevodu celého čísla z 10 sústavy do BCD kódu', '10', '1800', 'true');
+INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
+('8', 'Prevod celého čísla z BCD kódu do 10 sústavy', 'Cieľom cvičenia je precvičenie prevodu celého čísla z BCD kódu do 10 sústavy', '10', '1800', 'true');
 
 /* Tests */
 INSERT INTO public."Tests"("test_id", "name", "description", "max_time_s", "enabled") VALUES 
