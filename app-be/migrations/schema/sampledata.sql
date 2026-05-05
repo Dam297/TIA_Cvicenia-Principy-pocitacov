@@ -41,6 +41,8 @@ INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_q
 ('10', 'Sériové a paralelné zapojenie rezistorov', 'Cieľom cvičenia je precvičenie výpočtu odporu v sériovom a paralelnom zapojení rezistorov', '10', '1800', 'true');
 INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
 ('11', 'Sériové a paralelné zapojenie kondenzátorov', 'Cieľom cvičenia je precvičenie výpočtu kapacity v sériovom a paralelnom zapojení kondenzátorov', '10', '1800', 'true');
+INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
+('12', 'Sériové a paralelné zapojenie cievok', 'Cieľom cvičenia je precvičenie výpočtu indukčnosti v sériovom a paralelnom zapojení cievok', '10', '1800', 'true');
 
 /* Tests */
 INSERT INTO public."Tests"("test_id", "name", "description", "max_time_s", "enabled") VALUES 

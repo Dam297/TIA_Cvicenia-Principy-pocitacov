@@ -81,6 +81,18 @@ function generateExercise(id) {
                 concreteExercise["correct_answer"] = obj["result"];
             }
             break;
+        case 12:
+            choose = Math.floor(Math.random() * 2);
+            if (choose === 0) {
+                obj = generateSum();
+                concreteExercise["question"] = "Výpočítajte celkovú indukčnosť sériovo zapojených cievok, ak indukčnosť prvej cievky je " + obj["x1"] + "H a indukčnosť druhej cievky je " + obj["x2"] + "H. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["correct_answer"] = obj["result"];
+            } else if (choose === 1) {
+                obj = generateReciprocalSum();
+                concreteExercise["question"] = "Výpočítajte celkovú indukčnosť paralelne zapojených cievok, ak indukčnosť prvej cievky je " + obj["x1"] + "H a indukčnosť druhej cievky je " + obj["x2"] + "H. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["correct_answer"] = obj["result"];
+            }
+            break;
         default:
     }
     return concreteExercise;
