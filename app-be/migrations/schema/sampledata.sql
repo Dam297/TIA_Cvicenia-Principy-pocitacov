@@ -39,6 +39,8 @@ INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_q
 ('9', 'Výpočet pomocou Ohmovho zákona', 'Cieľom cvičenia je precvičenie výpočtu prúdu, napätia a odporu pomocou Ohmovho zákona', '10', '1800', 'true');
 INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
 ('10', 'Sériové a paralelné zapojenie rezistorov', 'Cieľom cvičenia je precvičenie výpočtu odporu v sériovom a paralelnom zapojení rezistorov', '10', '1800', 'true');
+INSERT INTO public."Exercises"("exercise_id", "name", "description", "count_of_questions", "max_time_s", "enabled") VALUES 
+('11', 'Sériové a paralelné zapojenie kondenzátorov', 'Cieľom cvičenia je precvičenie výpočtu kapacity v sériovom a paralelnom zapojení kondenzátorov', '10', '1800', 'true');
 
 /* Tests */
 INSERT INTO public."Tests"("test_id", "name", "description", "max_time_s", "enabled") VALUES 

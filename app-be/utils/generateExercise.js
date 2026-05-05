@@ -9,6 +9,7 @@ function generateExercise(id) {
     concreteExercise["question"] = "";
     concreteExercise["correct_answer"] = "";
     let obj = {};
+    let choose = 0;
     switch (Number(id)) {
         case 1:
             obj = generateNumber(10, 2);
@@ -56,8 +57,7 @@ function generateExercise(id) {
             concreteExercise["correct_answer"] = obj["correct_answer"];
             break;
         case 10:
-            const choose = Math.floor(Math.random() * 2);
-            console.log(choose);
+            choose = Math.floor(Math.random() * 2);
             if (choose === 0) {
                 obj = generateSum();
                 concreteExercise["question"] = "Výpočítajte celkový odpor sériovo zapojených rezistorov, ak odpor prvého rezistora je " + obj["x1"] + "Ω a odpor druhého rezistora je " + obj["x2"] + "Ω. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
@@ -65,6 +65,19 @@ function generateExercise(id) {
             } else if (choose === 1) {
                 obj = generateReciprocalSum();
                 concreteExercise["question"] = "Výpočítajte celkový odpor paralelne zapojených rezistorov, ak odpor prvého rezistora je " + obj["x1"] + "Ω a odpor druhého rezistora je " + obj["x2"] + "Ω. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["correct_answer"] = obj["result"];
+            }
+            break;
+        case 11:
+            choose = Math.floor(Math.random() * 2);
+            console.log(choose);
+            if (choose === 0) {
+                obj = generateSum();
+                concreteExercise["question"] = "Výpočítajte celkovú kapacitu paralelne zapojených kondenzátorov, ak kapacita prvého kondenzátora je " + obj["x1"] + "F a kapacita druhého kondenzátora je " + obj["x2"] + "F. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["correct_answer"] = obj["result"];
+            } else if (choose === 1) {
+                obj = generateReciprocalSum();
+                concreteExercise["question"] = "Výpočítajte celkovú kapacitu sériovo zapojených kondenzátorov, ak kapacita prvého kondenzátora je " + obj["x1"] + "F a kapacita druhého kondenzátora je " + obj["x2"] + "F. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
                 concreteExercise["correct_answer"] = obj["result"];
             }
             break;
