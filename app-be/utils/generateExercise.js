@@ -91,6 +91,7 @@ function generateExercise(id) {
             } else if (choose === 1) {
                 obj = generateReciprocalSum();
                 concreteExercise["question"] = "Výpočítajte celkovú indukčnosť paralelne zapojených cievok, ak indukčnosť prvej cievky je " + obj["x1"] + "H a indukčnosť druhej cievky je " + obj["x2"] + "H. Výsledok zaokruhlite na celé číslo";
+                concreteExercise["correct_answer"] = obj["result"];
             }
             break;
         case 13:
