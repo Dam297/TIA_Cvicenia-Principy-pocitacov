@@ -27,7 +27,6 @@ router.post('/', async function (req, res, next) {
                     if (auth.rows.length == 0) {
                         return res.status(401).end();
                     }
-    
                     const bestExerciseAttempt = await getBestExerciseAttempt(req.body, req.body["user_id"]); 
                     return res.status(200).json(bestExerciseAttempt.rows);
     

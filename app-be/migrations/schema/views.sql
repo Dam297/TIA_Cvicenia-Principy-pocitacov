@@ -114,5 +114,3 @@ CREATE VIEW "View_test_questions_count" AS
 	JOIN public."Test_questions" AS tq
 	ON tq."test_id" = t."test_id"
 	GROUP BY t."test_id", t."name",	t."description", t."max_time_s", t."enabled"
-
-

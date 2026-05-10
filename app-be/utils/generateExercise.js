@@ -3,6 +3,7 @@ var { generateNumberBcd } = require('../utils/generateExerciseNumbers/conversion
 var { generateOhm } = require('../utils/generateExerciseNumbers/ohm');
 var { generateSum } = require('../utils/generateExerciseNumbers/sum');
 var { generateReciprocalSum } = require('../utils/generateExerciseNumbers/reciprocalSum');
+var { generateBinary } = require('../utils/generateExerciseNumbers/conversionBinary');
 
 function generateExercise(id) {
     const concreteExercise = {};
@@ -93,6 +94,95 @@ function generateExercise(id) {
                 concreteExercise["correct_answer"] = obj["result"];
             }
             break;
+        case 13:
+            /* tabuľka boolovskej funkcie */
+            let tab = {};
+            tab["thead"] = { 0: "x", 1: "y", 2: "z", 3: "f(x, y, z)" }
+            tab["question"] = "Vytvorte DNF (disjunktívna normálna forma) z Boolovskej funkcie f, danej ako nasledujúca tabuľka:";
+            tab["tbody"] = {};
+            tab["tbody"][0] = {};
+            tab["tbody"][0]["x"] = 0;
+            tab["tbody"][0]["y"] = 0;
+            tab["tbody"][0]["z"] = 0;
+
+            tab["tbody"][1] = {};
+            tab["tbody"][1]["x"] = 0;
+            tab["tbody"][1]["y"] = 0;
+            tab["tbody"][1]["z"] = 1;
+
+            tab["tbody"][2] = {};
+            tab["tbody"][2]["x"] = 0;
+            tab["tbody"][2]["y"] = 1;
+            tab["tbody"][2]["z"] = 0;
+
+            tab["tbody"][3] = {};
+            tab["tbody"][3]["x"] = 0;
+            tab["tbody"][3]["y"] = 1;
+            tab["tbody"][3]["z"] = 1;
+
+            tab["tbody"][4] = {};
+            tab["tbody"][4]["x"] = 1;
+            tab["tbody"][4]["y"] = 0;
+            tab["tbody"][4]["z"] = 0;
+
+            tab["tbody"][5] = {};
+            tab["tbody"][5]["x"] = 1;
+            tab["tbody"][5]["y"] = 0;
+            tab["tbody"][5]["z"] = 1;
+
+            tab["tbody"][6] = {};
+            tab["tbody"][6]["x"] = 1;
+            tab["tbody"][6]["y"] = 1;
+            tab["tbody"][6]["z"] = 0;
+
+            tab["tbody"][7] = {};
+            tab["tbody"][7]["x"] = 1;
+            tab["tbody"][7]["y"] = 1;
+            tab["tbody"][7]["z"] = 1;
+
+            while (true) {
+                /* musí byť aspoň jedna nula a jedna jednotka  */
+                let isZero = false;
+                let isOne = false;
+                let value;
+                for (let i = 0; i < 2 * 2 * 2; i++) {
+                    value = generateBinary();
+                    if (value === 1) {
+                        isOne = true;
+                    }
+                    if (value === 0) {
+                        isZero = true;
+                    }
+                    tab["tbody"][i]["f(x, y, z)"] = value;
+                }
+                if (isZero && isOne) {
+                    break;
+                }
+            }
+
+            let correctAnswer = "";
+            let first = true;
+
+            for (let i = 0; i < 2 * 2 * 2; i++) {
+                /* otázka */
+                concreteExercise["question"] = JSON.stringify(tab);
+                /* odpoveď */
+                if (tab["tbody"][i]["f(x, y, z)"]) {
+                    if (!first) {
+                        correctAnswer = correctAnswer + " + ";
+                    }
+
+                    correctAnswer = correctAnswer + (tab["tbody"][i]["x"] === 0 ? "X" : "x");
+                    correctAnswer = correctAnswer + (tab["tbody"][i]["y"] === 0 ? "Y" : "y");
+                    correctAnswer = correctAnswer + (tab["tbody"][i]["z"] === 0 ? "Z" : "z");
+
+                    if (first) {
+                        first = false;
+                    }
+                }
+            }
+            concreteExercise["correct_answer"] = correctAnswer;
+
         default:
     }
     return concreteExercise;

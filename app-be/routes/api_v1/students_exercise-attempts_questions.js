@@ -8,6 +8,7 @@ var { getExerciseQuestionCorrectAnswer } = require('../../models/database');
 var { checkAuthExerciseQuestion } = require('../../models/database');
 var { checkAuthExerciseQuestionCorrectAnswer } = require('../../models/database');
 var { generateExercise } = require('../../utils/generateExercise');
+var { checkExercise } = require('../../utils/checkExercise');
 
 
 var router = express.Router();
@@ -60,10 +61,16 @@ router.post('/', async function (req, res, next) {
             if (auth.rows.length == 0) {
                 return res.status(401).end();
             }
-            
             await endExerciseQuestion(req.body);
-            const correct = (await getExerciseQuestionCorrectAnswer(req.body)).rows[0]["correct_answer"];
-            req.body["correct"] = (correct === req.body["student_answer"]);
+
+            const returnObj = (await getExerciseQuestionCorrectAnswer(req.body)).rows[0];
+            let cor = false;
+            if(checkExercise(returnObj["exercise_id"], returnObj["question"], returnObj["correct_answer"],  req.body["student_answer"]) === true) {
+                cor = true;
+            }
+
+            req.body["correct"] = cor;
+
             await setAnswerExerciseQuestion(req.body);
             return res.status(200).end();
 

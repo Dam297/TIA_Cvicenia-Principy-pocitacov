@@ -1,6 +1,47 @@
 import Timer from "../components/Timer";
 
-function ExerciseBox({ numberQuestion, countQuestion, time, question, isQuestion, answer, handleAnswer, correctAnswer, afterSubmit, isCorrect }) {
+function ExerciseBox({ numberQuestion, countQuestion, time, question, isQuestion, answer, handleAnswer, correctAnswer, afterSubmit, isCorrect, id }) {
+    let locQuestion = {};
+
+    if (id === 13) {
+        try {
+            var myObj = JSON.parse(question);
+            locQuestion = <>
+                <p className="row m-0 font-weight-bold">{myObj["question"]}</p>
+                <p className="row m-0 font-weight-bold">Poznámka: pri písaní môžete používať zátvorky, OR píšte ako znak +, AND píšte ako znak * alebo ho môžete vynechať, premenné píšte malým písmom a negované premenné píšte veľkým písmom</p>
+                <div className="row align-items-center justify-content-left">
+                    <div className="col-3 table-responsive">
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    {Object.entries(myObj["thead"]).map(([key, value]) => (
+                                        <th className="text-center" key={key} scope="col">{value}</th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {Object.entries(myObj["tbody"]).map(([key, value]) => (
+                                    <tr key={key}>
+                                        {Object.entries(value).map(([k, v]) => (
+                                            <td className="text-center" key={k}>
+                                                {v}
+                                            </td>
+                                        ))
+                                        }
+                                    </tr>))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </>
+        }
+        catch {
+            return;
+        }
+    } else {
+        locQuestion = <p className="row m-0 font-weight-bold">{question}</p>;
+    }
+
     return <div className="row align-items-center justify-content-center" >
         <div className="col-10 bg-light p-4 m-3">
             <div className="row m-0">
@@ -11,12 +52,10 @@ function ExerciseBox({ numberQuestion, countQuestion, time, question, isQuestion
                     <p className="text-end">Zostavajúci čas: <Timer numSec={time} /></p>
                 </div>
             </div>
-
-            <p className="row m-0 font-weight-bold">{question}</p>
-
+            {locQuestion}
             {isQuestion
                 ?
-                <input className="row m-0" value={answer} onChange={handleAnswer} type="text" maxLength="16" minLength="1" className="form-control" placeholder="Odpoveď" aria-label="Odpoveď" ></input>
+                <input className="row m-0" value={answer} onChange={handleAnswer} type="text" minLength="1" className="form-control" placeholder="Odpoveď" aria-label="Odpoveď" ></input>
                 :
 
                 isCorrect

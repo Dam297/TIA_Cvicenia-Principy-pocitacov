@@ -527,9 +527,13 @@ exports.getExerciseQuestionCorrectAnswer = function (param) {
 	return pool.query(`
 		SELECT
 			eqa."correct_answer",
-			eqa."correct"
+			eqa."correct",
+			eqa."question",
+			ea."exercise_id"
 		FROM
 			public."Exercise_question_answers" AS eqa
+		JOIN public."Exercise_attempts" AS ea
+		ON eqa."exercise_attempt_id" = ea."exercise_attempt_id"
 		WHERE eqa."exercise_question_answer_id" = $1
 	`, [param.exercise_question_answer_id])
 };

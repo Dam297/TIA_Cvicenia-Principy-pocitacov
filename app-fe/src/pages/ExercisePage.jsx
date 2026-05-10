@@ -144,6 +144,7 @@ function ExercisePage(props) {
         <Navigate to={navigateTo} />
         <Nav authStatus={props.authStatus} setAuthStatus={props.setAuthStatus} setError={props.setError} />
         <ExerciseBox
+            id={id}
             numberQuestion={numberQuestion}
             countQuestion={countQuestion}
             time={time}
