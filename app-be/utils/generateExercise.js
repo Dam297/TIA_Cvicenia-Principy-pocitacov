@@ -24,7 +24,7 @@ function generateExercise(id) {
             break;
         case 3:
             obj = generateNumber(10, 16);
-            concreteExercise["question"] = "Preveďte číslo " + obj["from"] + " z 10 do 16 sústavy (znaky abecedy píšte veľkými písmenami)";
+            concreteExercise["question"] = "Preveďte číslo " + obj["from"] + " z 10 do 16 sústavy";
             concreteExercise["correct_answer"] = obj["to"];
             break;
         case 4:
@@ -34,7 +34,7 @@ function generateExercise(id) {
             break;
         case 5:
             obj = generateNumber(2, 16);
-            concreteExercise["question"] = "Preveďte číslo " + obj["from"] + " z 2 do 16 sústavy (znaky abecedy píšte veľkými písmenami)";
+            concreteExercise["question"] = "Preveďte číslo " + obj["from"] + " z 2 do 16 sústavy";
             concreteExercise["correct_answer"] = obj["to"];
             break;
         case 6:
@@ -61,11 +61,11 @@ function generateExercise(id) {
             choose = Math.floor(Math.random() * 2);
             if (choose === 0) {
                 obj = generateSum();
-                concreteExercise["question"] = "Výpočítajte celkový odpor sériovo zapojených rezistorov, ak odpor prvého rezistora je " + obj["x1"] + "Ω a odpor druhého rezistora je " + obj["x2"] + "Ω. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["question"] = "Výpočítajte celkový odpor sériovo zapojených rezistorov, ak odpor prvého rezistora je " + obj["x1"] + "Ω a odpor druhého rezistora je " + obj["x2"] + "Ω. Výsledok zaokruhlite na celé číslo";
                 concreteExercise["correct_answer"] = obj["result"];
             } else if (choose === 1) {
                 obj = generateReciprocalSum();
-                concreteExercise["question"] = "Výpočítajte celkový odpor paralelne zapojených rezistorov, ak odpor prvého rezistora je " + obj["x1"] + "Ω a odpor druhého rezistora je " + obj["x2"] + "Ω. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["question"] = "Výpočítajte celkový odpor paralelne zapojených rezistorov, ak odpor prvého rezistora je " + obj["x1"] + "Ω a odpor druhého rezistora je " + obj["x2"] + "Ω. Výsledok zaokruhlite na celé číslo";
                 concreteExercise["correct_answer"] = obj["result"];
             }
             break;
@@ -74,11 +74,11 @@ function generateExercise(id) {
             console.log(choose);
             if (choose === 0) {
                 obj = generateSum();
-                concreteExercise["question"] = "Výpočítajte celkovú kapacitu paralelne zapojených kondenzátorov, ak kapacita prvého kondenzátora je " + obj["x1"] + "F a kapacita druhého kondenzátora je " + obj["x2"] + "F. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["question"] = "Výpočítajte celkovú kapacitu paralelne zapojených kondenzátorov, ak kapacita prvého kondenzátora je " + obj["x1"] + "F a kapacita druhého kondenzátora je " + obj["x2"] + "F. Výsledok zaokruhlite na celé číslo";
                 concreteExercise["correct_answer"] = obj["result"];
             } else if (choose === 1) {
                 obj = generateReciprocalSum();
-                concreteExercise["question"] = "Výpočítajte celkovú kapacitu sériovo zapojených kondenzátorov, ak kapacita prvého kondenzátora je " + obj["x1"] + "F a kapacita druhého kondenzátora je " + obj["x2"] + "F. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["question"] = "Výpočítajte celkovú kapacitu sériovo zapojených kondenzátorov, ak kapacita prvého kondenzátora je " + obj["x1"] + "F a kapacita druhého kondenzátora je " + obj["x2"] + "F. Výsledok zaokruhlite na celé číslo";
                 concreteExercise["correct_answer"] = obj["result"];
             }
             break;
@@ -86,12 +86,11 @@ function generateExercise(id) {
             choose = Math.floor(Math.random() * 2);
             if (choose === 0) {
                 obj = generateSum();
-                concreteExercise["question"] = "Výpočítajte celkovú indukčnosť sériovo zapojených cievok, ak indukčnosť prvej cievky je " + obj["x1"] + "H a indukčnosť druhej cievky je " + obj["x2"] + "H. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
+                concreteExercise["question"] = "Výpočítajte celkovú indukčnosť sériovo zapojených cievok, ak indukčnosť prvej cievky je " + obj["x1"] + "H a indukčnosť druhej cievky je " + obj["x2"] + "H. Výsledok zaokruhlite na celé číslo";
                 concreteExercise["correct_answer"] = obj["result"];
             } else if (choose === 1) {
                 obj = generateReciprocalSum();
-                concreteExercise["question"] = "Výpočítajte celkovú indukčnosť paralelne zapojených cievok, ak indukčnosť prvej cievky je " + obj["x1"] + "H a indukčnosť druhej cievky je " + obj["x2"] + "H. Výsledok zaokruhlite na dve desatinné miesta, desatinnú čiarku píšte ako bodka";
-                concreteExercise["correct_answer"] = obj["result"];
+                concreteExercise["question"] = "Výpočítajte celkovú indukčnosť paralelne zapojených cievok, ak indukčnosť prvej cievky je " + obj["x1"] + "H a indukčnosť druhej cievky je " + obj["x2"] + "H. Výsledok zaokruhlite na celé číslo";
             }
             break;
         case 13:

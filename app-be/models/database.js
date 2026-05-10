@@ -177,7 +177,7 @@ exports.getSuccessExerciseTestUser = function (userId) {
 	WITH "User_exercise" AS (
 		SELECT 
 			u."user_id", 
-			e."exercise_id", 
+			e."exercise_id",
 			e."name", 
 			e."count_of_questions", 
 			e."enabled"
@@ -192,7 +192,7 @@ exports.getSuccessExerciseTestUser = function (userId) {
 	"User_test" AS (
 		SELECT 
 			u."user_id", 
-			t."test_id", 
+			t."test_id",
 			t."name", 
 			t."count" AS "count_of_questions", 
 			t."enabled"

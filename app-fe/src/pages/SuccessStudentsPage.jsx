@@ -32,12 +32,15 @@ function SuccessStudentsPage(props) {
                 "exercise_id": exercise_id,
             });
             const maximum = count_of_questions;
-            const correct = attempt["count_correct"];
+            let correct = null;
+            console.log(attempt);
+            if (attempt.length > 0) {
+                correct = attempt[0]["count_correct"];
+            }
             const score = correct / maximum;
             let b = (score >= NEEDSUCCESS) ? true : false;
             props.setError('');
-
-            return [((correct == null) ? "" : correct) + "/" + maximum, b];
+            return [((correct === null) ? "" : correct) + "/" + maximum, b];
         } catch (error) {
             console.log(error);
             props.setError(error.message || "Error getting success rate of exercise");
@@ -61,8 +64,8 @@ function SuccessStudentsPage(props) {
                 let b = (correct >= NEEDSUCCESSTEST) ? true : false;
                 return [((correct == null) ? "" : correct), b];
             }
-            return ["", false];
             props.setError('');
+            return ["", false];
         } catch (error) {
             console.log(error);
             props.setError(error.message || "Error getting success rate of test");
