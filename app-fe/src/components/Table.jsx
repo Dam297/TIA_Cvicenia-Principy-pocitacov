@@ -23,7 +23,7 @@ function TableRow({ row }) {
 function Table({ header_orig, rows }) {
     return (
         <div className="row align-items-center justify-content-center">
-            <div className="col-8 table-responsive">
+            <div className="col-10 table-responsive">
                 <table className="table table-hover">
                     <TableHeader header={header_orig} />
                     <tbody>

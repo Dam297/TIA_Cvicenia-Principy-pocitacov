@@ -10,23 +10,23 @@ function DescriptionTestExercise({header, paragraphs, needSuccess, maximalTime, 
             }
 
             <div className="row m-0">
-                <div className="col-5 p-0">
+                <div className="col-12 col-md-5 p-0">
                     <p><strong>Potrebná úspešnosť: {needSuccess}</strong></p>
                 </div>
-                <div className="col-5 pl-1">
+                <div className="col-12 col-md-5 p-0">
                     <p><strong>Maximálny čas úspešného pokusu: {maximalTime}</strong></p>
                 </div>
-                <div className="col-2 p-1">
+                <div className="col-12 col-md-2 p-1">
                 </div>
             </div>
             <div className="row m-0">
-                <div className="col-5 p-0">
+                <div className="col-12 col-md-5 p-0">
                     <p><strong>Najúspešnejší pokus: {bestSuccess} </strong></p>
                 </div>
-                <div className="col-5 pl-1">
+                <div className="col-12 col-md-5 p-0">
                     <p><strong>Trvanie najúspešnejšieho pokusu: {bestSuccessTime}</strong></p>
                 </div>
-                <div className="col-2 p-1">
+                <div className="col-12 col-md-2 p-1">
                     <Button text={buttonText} where={buttonLink} onClickButton={onClickButton}/>
                 </div>
             </div>
