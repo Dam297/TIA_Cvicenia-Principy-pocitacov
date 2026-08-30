@@ -19,7 +19,7 @@ function App() {
   return (
     <div className="container">
       <BrowserRouter>
-        <ErrorShow setError={setError} error={error} onClose={() => setError("")} />
+        <ErrorShow setError={setError} error={error} />
         <Routes>
           <Route
             path="/home"
