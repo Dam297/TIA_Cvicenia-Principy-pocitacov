@@ -1,80 +1,95 @@
 import HeaderBig from "../components/HeaderBig";
-import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { login } from '../services/authService';
 import { useState } from "react";
+import { Box, Paper, TextField, Button, Typography, Stack } from "@mui/material";
 
-function LoginPage(props) {
+function LoginPage({ setAuthStatus, setError }) {
     const header = "Vitajte na cvičeniach z predmetu Princípy počítačov";
     const navigate = useNavigate();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleUsernameChange = (e) => setUsername(e.target.value);
-    const handlePasswordChange = (e) => setPassword(e.target.value);
-
 
     const submit = (e) => {
         e.preventDefault();
 
         if (username === '' || password === '') {
-            props.setError('Zadajte správny login a heslo');
+            setError('Zadajte správny login a heslo');
             return;
         }
 
         login(username, password)
             .then(() => {
-                props.setAuthStatus(true);
+                setAuthStatus(true);
+                setError('');
                 navigate("/home");
-                props.setError('');
             })
             .catch((error) => {
                 console.log(error.message);
-                props.setError(error.message)
+                setError(error.message || "Chyba pri prihlasovaní");
                 return;
             });
 
         // reset error message if the form is valid
-        props.setError('');
+        setError('');
     }
 
-    return <>
-        <div className="d-flex flex-column justify-content-center  vh-100">
-            <HeaderBig name={header} />
+    return (
+        <Box
+            sx={{
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#f5f5f5",
+            }}
+        >
+                       <Paper
+                elevation={4}
+                sx={{
+                    padding: 4,
+                    width: 360,
+                    borderRadius: 3,
+                }}
+            >
+                <Typography variant="h4" align="center" gutterBottom>
+                    {header}
+                </Typography>
 
-            <div className="row justify-content-center align-items-center mt-5">
-                <div className="col-auto">
+                <form onSubmit={submit}>
+                    <Stack spacing={2}>
+                        <TextField
+                            label="Login"
+                            variant="outlined"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            fullWidth
+                        />
 
-                    <form onSubmit={submit}>
-                        <div className="form-group">
-                            <label htmlFor="username">Login</label>
-                            <input
-                                type="text"
-                                id="username"
-                                className="form-control"
-                                value={username}
-                                onChange={handleUsernameChange}
-                                placeholder="Zadajte login"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Heslo</label>
-                            <input
-                                type="password"
-                                id="password"
-                                className="form-control"
-                                value={password}
-                                onChange={handlePasswordChange}
-                                placeholder="Zadajte heslo"
-                            />
-                        </div>
-                        <button className="btn btn-primary" >Prihlásiť sa</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </>
+                        <TextField
+                            label="Heslo"
+                            type="password"
+                            variant="outlined"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            fullWidth
+                        />
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            size="large"
+                            fullWidth
+                        >
+                            Prihlásiť sa
+                        </Button>
+                        </Stack>
+                        </form>
+                </Paper> 
+        </Box>
+    )
+    
 }
 
 export default LoginPage
